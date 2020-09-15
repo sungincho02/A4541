@@ -1,1 +1,50 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+  bool replay = true;
+  int number = 0;
+  int guess = 0;
+  int guessCount = 0;
+  bool finish = false;
+  char input = 0;
+  while (replay == true) {
+    srand (time(NULL));
+    number = rand() % 101;
+    cout << number << endl;
+    guessCount = 0;
+    finish = false;
+    cout << "Guess a number between 0 and 100" << endl;
+    while (finish == false) {
+      cin >> guess;
+      while (guess > 100 || guess < 0) {
+        cout << "The number is between 0 and 100" << endl;
+        cin >> guess;
+      }
+      guessCount++;
+      if (guess == number) {
+        cout << "You guessed the number!" << endl;
+        cout << "Number of guess: " << guessCount << endl;
+        finish = true;
+      }
+      else if (guess > number) {
+        cout << "Your guess is higher than the number" << endl;
+      }
+      else if (guess < number) {
+        cout << "Your guess is lower than the number" << endl;
+      }
+    }
+    cout << "Replay the game? [Y/N]" << endl;
+    cin >> input;
+    while (input != 'Y' && input != 'N') {
+      cout << "Please answer with a \"Y\" or \"N\"" << endl;
+      cin >> input;
+    }
+    if (input == 'N') {
+      replay = false;
+    }
+  }
+}
 
