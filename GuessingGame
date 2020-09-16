@@ -16,7 +16,6 @@ int main()
     //generate a random number between 0 and 100
     srand (time(NULL));
     number = rand() % 101;
-    cout << number << endl;
     //reset variables
     guessCount = 0;
     finish = false;
