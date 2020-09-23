@@ -12,12 +12,12 @@ int main()
   cout << "Enter a text" << endl;
   cin.get(input, 80);
 
-  //take only alphanumeric
+  //take only alphanumeric and change to lowercase
   int count = 0;
   for (int i = 0; i < 80; i++) {
     if (input[i] != '\0') {
       if (isalnum(input[i])) {
-        alnum[count] = input[i];
+        alnum[count] = tolower(input[i]);
         count++;
       }
     }
