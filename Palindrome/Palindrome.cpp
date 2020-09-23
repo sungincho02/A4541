@@ -12,7 +12,7 @@ int main()
   cout << "Enter a text" << endl;
   cin.get(input, 80);
 
-  //take only alphanumeric and change to lowercase
+  //take only alphanumeric and uncapitalize
   int count = 0;
   for (int i = 0; i < 80; i++) {
     if (input[i] != '\0') {
