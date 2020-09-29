@@ -15,12 +15,12 @@ int main() {
   vector<vector<char>> board{{N, N, N},
                              {N, N, N},
                              {N, N, N}};
-
+  
 
 
   return 0;
 }
 
-int checkWin() {
-
+int checkWin(vector<vector<char>> board) {
+  
 }
