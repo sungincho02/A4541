@@ -1,3 +1,11 @@
+/*
+ * Project: TicTacToe
+ * Author: Sungin Cho
+ * Date: 9/30/20 
+ * Instructor: Jason Galbraith
+ * Description: This is a tictactoe program for two players
+ */
+
 #include <iostream>
 #include <vector>
 #include <string>
