@@ -48,6 +48,7 @@ int main() {
       else {
 	cout << "That spot is already taken" << endl;
       }
+      cin.get(input, 3);
     }
     if (turn == XT) {
       board[a][n] = X;
@@ -91,7 +92,11 @@ int checkWin() {
 
 void newMatch() {
   cout << "X Win: " << x_win << " O Win: " << o_win << " Tie: " << tie << endl;
-  fill(board.begin(), board.end(), N);
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      board[i][j] = N;
+    }
+  }
   turn = XT;
 
   char in;
