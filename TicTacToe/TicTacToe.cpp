@@ -40,8 +40,7 @@ int main() {
         cout << "Please enter a valid coordinate" << endl;
         cin.get(input, 3);
       }
-      tolower(input[0]);
-      a = (int)input[0] - 97;
+      a = (int)tolower(input[0]) - 97;
       n = (int)input[2] - 49;
       if (board[a][n] == N) {
 	occupied = false;
