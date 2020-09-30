@@ -36,11 +36,12 @@ int main() {
     cin.get(input, 3);
     bool occupied = true;
     while (occupied) {
-      while (isalpha(input[0]) == false || input[1] != ',' || isalnum(input[2]) == false || input[2] == '0') {
+      while (isalpha(input[0]) == false || input[1] != ',' || isdigit(input[2]) == false || input[2] == '0') {
         cout << "Please enter a valid coordinate" << endl;
         cin.get(input, 3);
       }
-      a = (int)tolower(input[0]) - 97;
+      tolower(input[0]);
+      a = (int)input[0] - 97;
       n = (int)input[2] - 49;
       if (board[a][n] == N) {
 	occupied = false;
@@ -48,6 +49,7 @@ int main() {
       else {
 	cout << "That spot is already taken" << endl;
       }
+      cin.get(input, 3);
     }
     if (turn == XT) {
       board[a][n] = X;
@@ -91,7 +93,11 @@ int checkWin() {
 
 void newMatch() {
   cout << "X Win: " << x_win << " O Win: " << o_win << " Tie: " << tie << endl;
-  fill(board.begin(), board.end(), N);
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      board[i][j] = N;
+    }
+  }
   turn = XT;
 
   char in;
