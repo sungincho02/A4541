@@ -36,7 +36,7 @@ int main() {
     cin.get(input, 3);
     bool occupied = true;
     while (occupied) {
-      while (isalpha(input[0]) == false || input[1] != ',' || isalnum(input[2]) == false || input[2] == '0') {
+      while (isalpha(input[0]) == false || input[1] != ',' || isdigit(input[2]) == false || input[2] == '0') {
         cout << "Please enter a valid coordinate" << endl;
         cin.get(input, 3);
       }
