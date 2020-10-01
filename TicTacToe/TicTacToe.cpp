@@ -13,12 +13,14 @@
 
 using namespace std;
 
+// const variables
 const string XT = "X Turn",
   OT = "O Turn";
 const char N = ' ',
   X = 'X',
   O = 'O';
 
+// global variables
 string turn = XT;
 int x_win = 0,
   o_win = 0,
@@ -31,17 +33,22 @@ int a, n;
 bool replay = true;
 bool occupied = true;
 
+// function prototypes
 void drawBoard();
 int checkWin();
 void newMatch();
 
 int main() {
-
+  // guide message
   cout << "Enter a coordinate to make a move" << endl;
   cout << "ex) a,2" << endl;
+	
   while (replay) {
+    // output tictactoe board and turn
     drawBoard();
     cout << " " << turn << endl;
+	  
+    // check input validity
     do {
       cin >> input;
       while ((int)input[0] < 97 || (int)input[0] > 99 ||
@@ -62,6 +69,7 @@ int main() {
       }
     } while (occupied);
     
+    // mark the move and pass turn
     if (turn == XT) {
       board[a][n] = X;
       turn = OT;
@@ -70,6 +78,8 @@ int main() {
       board[a][n] = O;
       turn = XT;
     }
+	  
+    // check for win or tie
     if (checkWin() == 1) {
       x_win++;
       drawBoard();
@@ -93,6 +103,7 @@ int main() {
   return 0;
 }
 
+// method for outputting the tictactoe board
 void drawBoard() {
   cout << "\n  1 2 3" << endl;
   cout << "a " << board[0][0] << " " << board[0][1] << " " << board[0][2] << endl;
@@ -100,6 +111,7 @@ void drawBoard() {
   cout << "c " << board[2][0] << " " << board[2][1] << " " << board[2][2] << endl;
 }
 
+// method for checking win or tie
 int checkWin() {
   bool win = false;
   int count = 0;
@@ -130,7 +142,7 @@ int checkWin() {
     }
   }
   
-  //check for draw
+  //check tie
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
       if (board[i][j] == N) {
@@ -145,8 +157,12 @@ int checkWin() {
   return 0;
 }
 
+// method for displaying winning totals and setting up a new match if the user chooses to continue
 void newMatch() {
+  // output winning totals
   cout << "\nX Win: " << x_win << "\nO Win: " << o_win << "\nTie: " << tie << endl;
+	
+  // reset board and turn
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
       board[i][j] = N;
@@ -154,6 +170,7 @@ void newMatch() {
   }
   turn = XT;
 
+  //ask for replay
   char in;
   cout << "\nPlay another match? [Y/N]" << endl;
   cin >> in;
