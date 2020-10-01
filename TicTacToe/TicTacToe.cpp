@@ -153,6 +153,7 @@ int checkWin() {
   if (count == 9) {
     return 3;
   }
+  count = 0;
   
   return 0;
 }
