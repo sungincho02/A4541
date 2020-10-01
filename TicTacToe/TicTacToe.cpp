@@ -10,8 +10,6 @@
 #include <vector>
 #include <string>
 #include <cstring>
-#include <cctype>
-#include <limits>
 
 using namespace std;
 
@@ -42,18 +40,16 @@ int main() {
   cout << "Enter a coordinate to make a move" << endl;
   cout << "ex) a,2" << endl;
   while (replay) {
-    cout << endl;
     drawBoard();
     cout << " " << turn << endl;
     do {
       cin >> input;
-      cin.clear();
-      cin.ignore(numeric_limits<streamsize>::max(), '\n');
-      while (!isalpha(input[0])|| input[1] != ',' || !isdigit(input[2]) || input[2] == '0') {
+      while ((int)input[0] < 97 || (int)input[0] > 99 ||
+	     input[1] != ',' ||
+	     (int)input[2] < 49 || (int)input[2] > 51 ||
+	     input[3] != '\0') {
         cout << "Please enter a valid coordinate" << endl;
         cin >> input;
-	cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
       }
       a = (int)tolower(input[0]) - 97;
       n = (int)input[2] - 49;
@@ -65,6 +61,7 @@ int main() {
 	occupied = true;
       }
     } while (occupied);
+    
     if (turn == XT) {
       board[a][n] = X;
       turn = OT;
@@ -76,19 +73,19 @@ int main() {
     if (checkWin() == 1) {
       x_win++;
       drawBoard();
-      cout << "X Win!" << endl;
+      cout << " X Win!" << endl;
       newMatch();
     }
     else if (checkWin() == 2) {
       o_win++;
       drawBoard();
-      cout << "O Win!" << endl;
+      cout << " O Win!" << endl;
       newMatch();
     }
     else if (checkWin() == 3) {
       tie++;
       drawBoard();
-      cout << "Tie!" << endl;
+      cout << " Tie!" << endl;
       newMatch();
     }
   }
@@ -97,18 +94,59 @@ int main() {
 }
 
 void drawBoard() {
-  cout << "  1 2 3" << endl;
+  cout << "\n  1 2 3" << endl;
   cout << "a " << board[0][0] << " " << board[0][1] << " " << board[0][2] << endl;
   cout << "b " << board[1][0] << " " << board[1][1] << " " << board[1][2] << endl;
   cout << "c " << board[2][0] << " " << board[2][1] << " " << board[2][2] << endl;
 }
 
 int checkWin() {
+  bool win = false;
+  int count = 0;
+
+  //check win
+  for (int i = 0; i < 3; i++) {
+    if (board [i][0] != N && board[i][0] == board[i][1] && board[i][0] == board[i][2]) {
+      win = true;
+    }
+  }
+  for (int i = 0; i < 3; i++) {
+    if (board [0][i] != N && board[0][i] == board[1][i] && board[0][i] == board[2][i]) {
+      win = true;
+    }
+  }
+  if (board [0][0] != N && board[0][0] == board[1][1] && board[0][0] == board[2][2]) {
+    win = true;
+  }
+  if (board [0][2] != N && board[0][2] == board[1][1] && board[0][2] == board[2][0]) {
+    win = true;
+  }
+  if (win) {
+    if (turn == OT) {
+      return 1;
+    }
+    else {
+      return 2;
+    }
+  }
+  
+  //check for draw
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      if (board[i][j] == N) {
+	count++;
+      }
+    }
+  }
+  if (count == 9) {
+    return 3;
+  }
+  
   return 0;
 }
 
 void newMatch() {
-  cout << "X Win: " << x_win << " O Win: " << o_win << " Tie: " << tie << endl;
+  cout << "\nX Win: " << x_win << "\nO Win: " << o_win << "\nTie: " << tie << endl;
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
       board[i][j] = N;
@@ -117,14 +155,12 @@ void newMatch() {
   turn = XT;
 
   char in;
-  cout << "Play another match? [Y/N]" << endl;
+  cout << "\nPlay another match? [Y/N]" << endl;
   cin >> in;
-
-  while (in != ('Y', 'N')) {
+  while (in != 'Y' && in != 'N') {
     cout << "Please answer with a \"Y\" or \"N\"" << endl;
     cin >> in;
   }
-
   if (in == 'N') {
     replay = false;
   }
