@@ -10,6 +10,8 @@
 #include <vector>
 #include <string>
 #include <cstring>
+#include <cctype>
+#include <limits>
 
 using namespace std;
 
@@ -29,6 +31,7 @@ vector<vector<char>> board{{N, N, N},
 char input[3];
 int a, n;
 bool replay = true;
+bool occupied = true;
 
 void drawBoard();
 int checkWin();
@@ -39,14 +42,18 @@ int main() {
   cout << "Enter a coordinate to make a move" << endl;
   cout << "ex) a,2" << endl;
   while (replay) {
+    cout << endl;
     drawBoard();
     cout << " " << turn << endl;
-    cin.get(input, 3);
-    bool occupied = true;
-    while (occupied) {
-      while (isalpha(input[0]) == false || input[1] != ',' || isdigit(input[2]) == false || input[2] == '0') {
+    do {
+      cin >> input;
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      while (!isalpha(input[0])|| input[1] != ',' || !isdigit(input[2]) || input[2] == '0') {
         cout << "Please enter a valid coordinate" << endl;
-        cin.get(input, 3);
+        cin >> input;
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
       }
       a = (int)tolower(input[0]) - 97;
       n = (int)input[2] - 49;
@@ -55,14 +62,16 @@ int main() {
       }
       else {
 	cout << "That spot is already taken" << endl;
+	occupied = true;
       }
-      cin.get(input, 3);
-    }
+    } while (occupied);
     if (turn == XT) {
       board[a][n] = X;
+      turn = OT;
     }
     else {
       board[a][n] = O;
+      turn = XT;
     }
     if (checkWin() == 1) {
       x_win++;
