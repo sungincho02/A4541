@@ -32,6 +32,7 @@ char input[3];
 int a, n;
 bool replay = true;
 bool occupied = true;
+int count = 0;
 
 // function prototypes
 void drawBoard();
@@ -72,10 +73,12 @@ int main() {
     // mark the move and pass turn
     if (turn == XT) {
       board[a][n] = X;
+      count++;
       turn = OT;
     }
     else {
       board[a][n] = O;
+      count++;
       turn = XT;
     }
 	  
@@ -114,7 +117,6 @@ void drawBoard() {
 // method for checking win or tie
 int checkWin() {
   bool win = false;
-  int count = 0;
 
   //check win
   for (int i = 0; i < 3; i++) {
@@ -143,17 +145,9 @@ int checkWin() {
   }
   
   //check tie
-  for (int i = 0; i < 3; i++) {
-    for (int j = 0; j < 3; j++) {
-      if (board[i][j] == N) {
-	count++;
-      }
-    }
-  }
   if (count == 9) {
     return 3;
   }
-  count = 0;
   
   return 0;
 }
@@ -170,6 +164,7 @@ void newMatch() {
     }
   }
   turn = XT;
+  count = 0;
 
   //ask for replay
   char in;
