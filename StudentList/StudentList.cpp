@@ -50,10 +50,10 @@ int main() {
 void add() {
   Student nstdnt;
   cout << "\nFirst name:" << endl;
-  cin,getline(nstdnt.fn, 20);
+  cin >> nstdnt.fn;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
   cout << "Last name:" << endl;
-  cin.getline(nstdnt.ln, 20);
+  cin >> nstdnt.ln;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
   cout << "Student ID:" << endl;
   cin >> nstdnt.id;
@@ -70,12 +70,26 @@ void add() {
   }
 
   list.push_back(nstdnt);
+  cout << "Student added" << endl;
 }
 
 void print() {
-
+  cout << endl;
+  for (int i = 0; i < list.size(); i++) {
+    cout << list[i].fn << " " << list[i].ln << ", " << list[i].id << ", " << list[i].gpa << endl;
+  }
 }
 
 void del() {
+  int id;
+  
+  cout << "\nEnter the student ID" << endl;
+  cin >> id;
 
+  for (int i = 0; i < list.size(); i++) {
+    if (id == list[i].id) {
+      list.erase(list.begin() + i);
+    }
+  }
+  cout << "Student deleted" << endl;
 }
