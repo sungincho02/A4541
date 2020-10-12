@@ -1,3 +1,10 @@
+/*
+ * Project: StudentList
+ * Author: Sungin Cho
+ * Date: 10/11/20
+ * Instructor: Jason Galbraith
+ * Description: This is a program for managing list of students
+ */
 #include <iostream>
 #include <cstring>
 #include <vector>
@@ -6,6 +13,7 @@
 
 using namespace std;
 
+// struct that keeps name, id, and gpa
 struct Student {
   char fn[20];
   char ln[20];
@@ -13,15 +21,18 @@ struct Student {
   float gpa;
 };
 
+// function prototypes
 void add(vector<Student*>* list);
 void print(vector<Student*>* list);
 void del(vector<Student*>* list);
 
 int main() {
+  // creating variables
   vector<Student*>* list = new vector<Student*>();
   bool quit = false;
   string input;
 
+  // setting gpa precision
   cout.setf(ios::fixed, ios::floatfield);
   cout.setf(ios::showpoint);
   cout.precision(2);
@@ -30,6 +41,7 @@ int main() {
     cout << "\nEnter a command" << endl;
     cin >> input;
 
+    // resolve the user command
     if (input == "ADD") {
       add(list);
     }
@@ -50,6 +62,7 @@ int main() {
   return 0;
 }
 
+// function that prompts for student information and adds to the list
 void add(vector<Student*>* list) {
   Student* nstdnt = new Student();
   cout << "\nFirst name:" << endl;
@@ -77,6 +90,7 @@ void add(vector<Student*>* list) {
   cout << "Student added" << endl;
 }
 
+// function that prints all the students in the list
 void print(vector<Student*>* list) {
   cout << endl;
   for (int i = 0; i < list -> size(); i++) {
@@ -84,6 +98,7 @@ void print(vector<Student*>* list) {
   }
 }
 
+// function that prompts for student ID and removes the student
 void del(vector<Student*>* list) {
   int id;
   bool valid = false;
