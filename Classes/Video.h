@@ -4,9 +4,9 @@
 
 using namespace std;
 
-class Video: public Media {
+class Videogame: public Media {
  public:
-  Video(string* ntitle, int nyear, string* npublisher, flaot nrating);
+  Videogame(string* ntitle, int nyear, string* npublisher, flaot nrating);
   string* getPublisher();
   float getRating();
  private:

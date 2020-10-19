@@ -1,20 +1,20 @@
 #include <iostream>
 #include <string.h>
-#include "Video.h"
+#include "Videogame.h"
 
 using namespace std;
 
-Video::Video(string* ntitle, int nyear, string* npublisher, float nrating) {
+Videogame::Videogame(string* ntitle, int nyear, string* npublisher, float nrating) {
   setTitle(ntitle);
   setYear(nyear);
   publisher = npublisher;
   rating = nrating;
 }
 
-string* Video::getPublisher() {
+string* Videogame::getPublisher() {
   return publisher;
 }
 
-float Video::getRating() {
+float Videogame::getRating() {
   return rating;
 }
