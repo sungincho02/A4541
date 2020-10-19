@@ -1,3 +1,6 @@
+#ifndef MEDIA_H
+#define MEDIA_H
+
 #include <iostream>
 #include <string.h>
 
@@ -13,3 +16,5 @@ class Media {
   string* title;
   int year;
 };
+
+#endif

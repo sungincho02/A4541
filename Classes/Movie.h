@@ -9,9 +9,9 @@ class Movie: public Media {
   Movie(string* ntitle, int nyear, string* ndirector, int nduration, float nrating);
   string* getDirector();
   int getDuration();
-  flaot getRating();
+  float getRating();
  private:
   string* director;
   int duration;
-  flaot rating;
+  float rating;
 };
