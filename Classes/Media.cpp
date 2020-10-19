@@ -1,4 +1,4 @@
-//implementation file for Media class
+// implementation file for Media class
 #include <iostream>
 #include <string.h>
 #include "Media.h"
