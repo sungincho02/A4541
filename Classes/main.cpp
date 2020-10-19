@@ -241,7 +241,7 @@ void print(Media* media) {
   }
 }
 
-// delete a digital media
+// search & delete digital media
 void del() {
   string input;
   bool nf = true;
