@@ -1,9 +1,11 @@
+//implementation file for Media class
 #include <iostream>
 #include <string.h>
 #include "Media.h"
 
 using namespace std;
 
+//getters and setters
 string* Media::getTitle() {
   return title;
 }
