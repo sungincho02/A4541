@@ -1,4 +1,4 @@
-//implementation file for Movie class
+// implementation file for Movie class
 #include <iostream>
 #include <string.h>
 #include "Movie.h"
