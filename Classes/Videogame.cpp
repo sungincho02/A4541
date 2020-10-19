@@ -1,3 +1,4 @@
+// implementation file for Videogame class
 #include <iostream>
 #include <string.h>
 #include "Videogame.h"
