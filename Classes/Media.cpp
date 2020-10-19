@@ -11,3 +11,11 @@ string* Media::getTitle() {
 int Media::getYear() {
   return year;
 }
+
+void Media::setTitle(string* ntitle) {
+  title = ntitle;
+}
+
+void Media::setYear(int nyear) {
+  year = nyear;
+}
