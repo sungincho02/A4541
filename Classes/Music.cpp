@@ -1,3 +1,4 @@
+// implementation file for Music class
 #include <iostream>
 #include <string.h>
 #include "Music.h"
