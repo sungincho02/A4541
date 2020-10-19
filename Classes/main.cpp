@@ -3,6 +3,7 @@
 #include <vector>
 #include <limits>
 #include <typeinfo>
+#include <algorithm>
 #include "Videogame.h"
 #include "Music.h"
 #include "Movie.h"
@@ -10,13 +11,17 @@
 using namespace std;
 
 vector<Media*> list;
+string dtitle;
+int dyear;
 
 void addVG();
 void addMusic();
 void addMovie();
-void print(Media* media);
 void search();
+void print(Media* media);
 void del();
+bool titleMatch(Media* media);
+bool yearMatch(Media* media);
 
 int main() {
   bool quit = false;
@@ -148,27 +153,13 @@ void addMovie() {
   cout << "Movie added" << endl;
 }
 
-void print(Media* media) {
-  if (typeid(*media) == typeid(Videogame)) {
-    Videogame* ptr = (Videogame*)media;
-    cout << "\nTitle: " << *(ptr->getTitle()) << "\nYear: " << ptr->getYear() << "\nPublisher: " << *(ptr->getPublisher()) << "\nRating: " << ptr->getRating() << endl;
-  }
-  else if (typeid(*media) == typeid(Music)) {
-    Music* ptr = (Music*)media;
-    cout << "\nTitle: " << *(ptr->getTitle()) << "\nYear: " << ptr->getYear() << "\nArtist: " << *(ptr->getArtist()) << "\nDuration: " << ptr->getDuration() << "m" << "\nPublisher: " << *(ptr->getPublisher()) << endl;
-  }
-  else if (typeid(*media) == typeid(Movie)) {
-    Movie* ptr = (Movie*)media;
-    cout << "\nTitle: " << *(ptr->getTitle()) << "\nYear: " << ptr->getYear() << "\nDirector: " << *(ptr->getDirector()) << "\nDuration: " << ptr->getDuration() << "m" << "\nRating: " << ptr->getRating() << endl;
-  }
-}
-
 void search() {
   string input;
   bool nf = true;
   
   cout << "\nSearch with:\n1) Title\n2) Year" << endl;
   cin >> input;
+  
   if (input == "1") {
     cout << "\nEnter the title:" << endl;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -204,6 +195,102 @@ void search() {
   }
 }
 
-void del() {
+void print(Media* media) {
+  if (typeid(*media) == typeid(Videogame)) {
+    Videogame* ptr = (Videogame*)media;
+    cout << "\nType: Video Game" << "\nTitle: " << *(ptr->getTitle()) << "\nYear: " << ptr->getYear() << "\nPublisher: " << *(ptr->getPublisher()) << "\nRating: " << ptr->getRating() << endl;
+  }
+  else if (typeid(*media) == typeid(Music)) {
+    Music* ptr = (Music*)media;
+    cout << "\nType: Music" << "\nTitle: " << *(ptr->getTitle()) << "\nYear: " << ptr->getYear() << "\nArtist: " << *(ptr->getArtist()) << "\nDuration: " << ptr->getDuration() << "m" << "\nPublisher: " << *(ptr->getPublisher()) << endl;
+  }
+  else if (typeid(*media) == typeid(Movie)) {
+    Movie* ptr = (Movie*)media;
+    cout << "\nType: Movie" << "\nTitle: " << *(ptr->getTitle()) << "\nYear: " << ptr->getYear() << "\nDirector: " << *(ptr->getDirector()) << "\nDuration: " << ptr->getDuration() << "m" << "\nRating: " << ptr->getRating() << endl;
+  }
+}
 
+void del() {
+  string input;
+  bool nf = true;
+  
+  cout << "\nSearch with:\n1) Title\n2) Year" << endl;
+  cin >> input;
+  
+  if (input == "1") {
+    cout << "\nEnter the title:" << endl;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, input);
+    dtitle = input;
+    
+    for (int i = 0; i < list.size(); i++) {
+      if (*(list.at(i)->getTitle()) == input) {
+	print(list.at(i));
+	nf = false;
+      }
+    }
+    if (nf) {
+      cout << "There's no digital media with that title" << endl;
+    }
+    else {
+      cout << "\nDelete these items? [Y/N]" << endl;
+      cin >> input;
+
+      while (input != "Y" && input != "N") {
+	cout << "Please answer with a \"Y\" or \"N\"" << endl;
+	cin >> input;
+      }
+      if (input == "Y") {
+	list.erase(remove_if(list.begin(), list.end(), titleMatch), list.end());
+	cout << "Items deleted" << endl;
+      }
+      else {
+	cout << "Deletion terminated" << endl;
+      }
+    }
+  }
+  else if (input == "2") {
+    cout << "\nEnter the year:" << endl;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, input);
+    dyear = stoi(input);
+
+    for (int i = 0; i < list.size(); i++) {
+      if (to_string(list.at(i)->getYear()) == input) {
+	print(list.at(i));
+	nf = false;
+      }
+    }
+    
+    if (nf) {
+      cout << "There's no digital media from that year" << endl;
+    }
+    else {
+      cout << "\nDelete these items? [Y/N]" << endl;
+      cin >> input;
+      
+      while (input != "Y" && input != "N") {
+	cout << "Please answer with a \"Y\" or \"N\"" << endl;
+	cin >> input;
+      }
+      if (input == "Y") {
+	list.erase(remove_if(list.begin(), list.end(), yearMatch), list.end());
+	cout << "Items deleted" << endl;
+      }
+      else {
+	cout << "Deletion terminated" << endl;
+      }
+    }
+  }
+  else {
+    cout << "Invalid command" << endl;
+  }
+}
+
+bool titleMatch(Media* media) {
+  return (*(media->getTitle()) == dtitle);
+}
+
+bool yearMatch(Media* media) {
+  return (media->getYear() == dyear);
 }

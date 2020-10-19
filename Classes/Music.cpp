@@ -12,6 +12,8 @@ Music::Music(string* ntitle, int nyear, string* nartist, int nduration, string* 
   publisher = npublisher;
 }
 
+Music::~Music() {}
+
 string* Music::getArtist() {
   return artist;
 }

@@ -7,6 +7,7 @@ using namespace std;
 class Videogame: public Media {
  public:
   Videogame(string* ntitle, int nyear, string* npublisher, float nrating);
+  ~Videogame();
   string* getPublisher();
   float getRating();
  private:

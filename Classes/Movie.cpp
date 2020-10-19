@@ -12,6 +12,8 @@ Movie::Movie(string* ntitle, int nyear, string* ndirector, int nduration, float 
   rating = nrating;
 }
 
+Movie::~Movie() {};
+
 string* Movie::getDirector() {
   return director;
 }

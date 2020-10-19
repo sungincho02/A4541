@@ -11,6 +11,8 @@ Videogame::Videogame(string* ntitle, int nyear, string* npublisher, float nratin
   rating = nrating;
 }
 
+Videogame::~Videogame() {}
+
 string* Videogame::getPublisher() {
   return publisher;
 }
