@@ -12,6 +12,6 @@ class Music: public Media {
   string* getPublisher();
  private:
   string* artist;
-  int duaration;
+  int duration;
   string* publisher;
 };

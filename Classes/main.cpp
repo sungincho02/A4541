@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <limits>
+#include <typeinfo>
 #include "Videogame.h"
 #include "Music.h"
 #include "Movie.h"
@@ -13,6 +14,7 @@ vector<Media*> list;
 void addVG();
 void addMusic();
 void addMovie();
+void print(Media* media);
 void search();
 void del();
 
@@ -69,12 +71,14 @@ void addVG() {
   float rating;
   
   cout << "\nTitle:" << endl;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
   getline(cin, title);
   
   cout << "Year:" << endl;
   cin >> year;
 
   cout << "Publisher:" << endl;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
   getline(cin, publisher);
 
   cout << "Rating;" << endl;
@@ -93,18 +97,21 @@ void addMusic() {
   string publisher;
   
   cout << "\nTitle:" << endl;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
   getline(cin, title);
   
   cout << "Year:" << endl;
   cin >> year;
 
   cout << "Artist:" << endl;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
   getline(cin, artist);
 
   cout << "Duration:" << endl;
   cin >> duration;
   
   cout << "Publisher:" << endl;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
   getline(cin, publisher);
 
   Media* nmedia = new Music(new string(title), year, new string(artist), duration, new string(publisher));
@@ -120,12 +127,14 @@ void addMovie() {
   float rating;
   
   cout << "\nTitle:" << endl;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
   getline(cin, title);
   
   cout << "Year:" << endl;
   cin >> year;
 
   cout << "Director:" << endl;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
   getline(cin, director);
 
   cout << "Duration:" << endl;
@@ -139,8 +148,60 @@ void addMovie() {
   cout << "Movie added" << endl;
 }
 
-void search() {
+void print(Media* media) {
+  if (typeid(*media) == typeid(Videogame)) {
+    Videogame* ptr = (Videogame*)media;
+    cout << "\nTitle: " << *(ptr->getTitle()) << "\nYear: " << ptr->getYear() << "\nPublisher: " << *(ptr->getPublisher()) << "\nRating: " << ptr->getRating() << endl;
+  }
+  else if (typeid(*media) == typeid(Music)) {
+    Music* ptr = (Music*)media;
+    cout << "\nTitle: " << *(ptr->getTitle()) << "\nYear: " << ptr->getYear() << "\nArtist: " << *(ptr->getArtist()) << "\nDuration: " << ptr->getDuration() << "m" << "\nPublisher: " << *(ptr->getPublisher()) << endl;
+  }
+  else if (typeid(*media) == typeid(Movie)) {
+    Movie* ptr = (Movie*)media;
+    cout << "\nTitle: " << *(ptr->getTitle()) << "\nYear: " << ptr->getYear() << "\nDirector: " << *(ptr->getDirector()) << "\nDuration: " << ptr->getDuration() << "m" << "\nRating: " << ptr->getRating() << endl;
+  }
+}
 
+void search() {
+  string input;
+  bool nf = true;
+  
+  cout << "\nSearch with:\n1) Title\n2) Year" << endl;
+  cin >> input;
+  if (input == "1") {
+    cout << "\nEnter the title:" << endl;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, input);
+    
+    for (int i = 0; i < list.size(); i++) {
+      if (*(list.at(i)->getTitle()) == input) {
+	print(list.at(i));
+	nf = false;
+      }
+    }
+    if (nf) {
+      cout << "There's no digital media with that title" << endl;
+    }
+  }
+  else if (input == "2") {
+    cout << "\nEnter the year:" << endl;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, input);
+
+    for (int i = 0; i < list.size(); i++) {
+      if (to_string(list.at(i)->getYear()) == input) {
+	print(list.at(i));
+	nf = false;
+      }
+    }
+    if (nf) {
+      cout << "There's no digital media from that year" << endl;
+    }
+  }
+  else {
+    cout << "Invalid command" << endl;
+  }
 }
 
 void del() {
