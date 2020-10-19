@@ -1,4 +1,4 @@
-//declaration file for Media class
+// declaration file for Media class
 #ifndef MEDIA_H
 #define MEDIA_H
 
@@ -9,6 +9,7 @@ using namespace std;
 
 class Media {
  public:
+  // accessors
   virtual string* getTitle();
   virtual int getYear();
   virtual void setTitle(string* ntitle);
