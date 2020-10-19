@@ -134,7 +134,7 @@ void addMovie() {
   cout << "Rating;" << endl;
   cin >> rating;
 
-  Media* nmedia = new Movie(new string(title), year, new string(director), dureation, rating);
+  Media* nmedia = new Movie(new string(title), year, new string(director), duration, rating);
   list.push_back(nmedia);
   cout << "Movie added" << endl;
 }
