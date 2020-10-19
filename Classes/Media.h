@@ -1,3 +1,4 @@
+//declaration file for Media class
 #ifndef MEDIA_H
 #define MEDIA_H
 
