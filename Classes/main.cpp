@@ -80,7 +80,7 @@ void addVG() {
   cout << "Rating;" << endl;
   cin >> rating;
 
-  Media* nmedia = new Media(new string(title), year, new string(publisher), rating);
+  Media* nmedia = new Videogame(new string(title), year, new string(publisher), rating);
   list.push_back(nmedia);
   cout << "Video game added" << endl;
 }
@@ -88,8 +88,9 @@ void addVG() {
 void addMusic() {
   string title;
   int year;
+  string artist;
+  int duration;
   string publisher;
-  float rating;
   
   cout << "\nTitle:" << endl;
   getline(cin, title);
@@ -97,21 +98,25 @@ void addMusic() {
   cout << "Year:" << endl;
   cin >> year;
 
+  cout << "Artist:" << endl;
+  getline(cin, artist);
+
+  cout << "Duration:" << endl;
+  cin >> duration;
+  
   cout << "Publisher:" << endl;
   getline(cin, publisher);
 
-  cout << "Rating;" << endl;
-  cin >> rating;
-
-  Media* nmedia = new Media(new string(title), year, new string(publisher), rating);
+  Media* nmedia = new Music(new string(title), year, new string(artist), duration, new string(publisher));
   list.push_back(nmedia);
-  cout << "Video game added" << endl;
+  cout << "Music added" << endl;
 }
 
 void addMovie() {
   string title;
   int year;
-  string publisher;
+  string director;
+  int duration;
   float rating;
   
   cout << "\nTitle:" << endl;
@@ -120,15 +125,18 @@ void addMovie() {
   cout << "Year:" << endl;
   cin >> year;
 
-  cout << "Publisher:" << endl;
-  getline(cin, publisher);
+  cout << "Director:" << endl;
+  getline(cin, director);
 
+  cout << "Duration:" << endl;
+  cin >> duration;
+  
   cout << "Rating;" << endl;
   cin >> rating;
 
-  Media* nmedia = new Media(new string(title), year, new string(publisher), rating);
+  Media* nmedia = new Movie(new string(title), year, new string(director), dureation, rating);
   list.push_back(nmedia);
-  cout << "Video game added" << endl;
+  cout << "Movie added" << endl;
 }
 
 void search() {
