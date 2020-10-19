@@ -5,7 +5,6 @@
 
 using namespace std;
 
-//getters and setters
 string* Media::getTitle() {
   return title;
 }
