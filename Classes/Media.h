@@ -3,19 +3,19 @@
 #define MEDIA_H
 
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using namespace std;
 
 class Media {
  public:
   // accessors
-  virtual string* getTitle();
+  virtual char* getTitle();
   virtual int getYear();
-  virtual void setTitle(string* ntitle);
+  virtual void setTitle(char* ntitle);
   virtual void setYear(int nyear);
  private:
-  string* title;
+  char* title[99];
   int year;
 };
 
