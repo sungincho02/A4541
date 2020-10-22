@@ -14,7 +14,7 @@ Videogame::Videogame(char ntitle[], int nyear, char npublisher[], float nrating)
 
 Videogame::~Videogame() {}
 
-char Videogame::getPublisher() {
+char* Videogame::getPublisher() {
   return publisher;
 }
 
