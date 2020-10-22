@@ -8,7 +8,7 @@ using namespace std;
 class Movie: public Media {
  public:
   // constructor
-  Movie(char ntitle[], int nyear, char ndirector, int nduration, float nrating);
+  Movie(char ntitle[], int nyear, char ndirector[], int nduration, float nrating);
   // destructor
   ~Movie();
   // accessors
