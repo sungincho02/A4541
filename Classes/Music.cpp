@@ -15,7 +15,7 @@ Music::Music(char ntitle[], int nyear, char nartist[], int nduration, char npubl
 
 Music::~Music() {}
 
-char Music::getArtist() {
+char* Music::getArtist() {
   return artist;
 }
 
@@ -23,6 +23,6 @@ int Music::getDuration() {
   return duration;
 }
 
-char Music::getPublisher() {
+char* Music::getPublisher() {
   return publisher;
 }
