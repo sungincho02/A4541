@@ -1,11 +1,11 @@
 // implementation file for Movie class
 #include <iostream>
-#include <string.h>
+#include <cstring>
 #include "Movie.h"
 
 using namespace std;
 
-Movie::Movie(string* ntitle, int nyear, string* ndirector, int nduration, float nrating) {
+Movie::Movie(char ntitle[], int nyear, string* ndirector, int nduration, float nrating) {
   setTitle(ntitle);
   setYear(nyear);
   director = ndirector;
@@ -15,7 +15,7 @@ Movie::Movie(string* ntitle, int nyear, string* ndirector, int nduration, float 
 
 Movie::~Movie() {};
 
-string* Movie::getDirector() {
+char Movie::getDirector() {
   return director;
 }
 
