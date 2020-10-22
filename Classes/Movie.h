@@ -1,6 +1,6 @@
 // declaration file for Movie class
 #include <iostream>
-#include <string.h>
+#include <cstring>
 #include "Media.h"
 
 using namespace std;
@@ -8,15 +8,15 @@ using namespace std;
 class Movie: public Media {
  public:
   // constructor
-  Movie(string* ntitle, int nyear, string* ndirector, int nduration, float nrating);
+  Movie(char ntitle[], int nyear, char ndirector, int nduration, float nrating);
   // destructor
   ~Movie();
   // accessors
-  string* getDirector();
+  char getDirector();
   int getDuration();
   float getRating();
  private:
-  string* director;
+  char director[99];
   int duration;
   float rating;
 };
