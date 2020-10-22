@@ -3,7 +3,7 @@
  * Author: Sungin Cho
  * Date: 10/19/20
  * Instructor: Jason Galbraith
- * Description: This is a program for managing a list of 3 types of digital medias
+ * Description: This is a program for managing a list of 3 types of digital media
  */
 #include <iostream>
 #include <cstring>
