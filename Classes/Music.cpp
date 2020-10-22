@@ -1,11 +1,11 @@
 // implementation file for Music class
 #include <iostream>
-#include <string.h>
+#include <cstring>
 #include "Music.h"
 
 using namespace std;
 
-Music::Music(string* ntitle, int nyear, string* nartist, int nduration, string* npublisher) {
+Music::Music(char ntitle[], int nyear, char nartist[], int nduration, char npublisher[]) {
   setTitle(ntitle);
   setYear(nyear);
   artist = nartist;
@@ -15,7 +15,7 @@ Music::Music(string* ntitle, int nyear, string* nartist, int nduration, string* 
 
 Music::~Music() {}
 
-string* Music::getArtist() {
+char Music::getArtist() {
   return artist;
 }
 
@@ -23,6 +23,6 @@ int Music::getDuration() {
   return duration;
 }
 
-string* Music::getPublisher() {
+char Music::getPublisher() {
   return publisher;
 }
