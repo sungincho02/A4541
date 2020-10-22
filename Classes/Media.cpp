@@ -5,7 +5,7 @@
 
 using namespace std;
 
-char Media::getTitle() {
+const char* Media::getTitle() {
   return title;
 }
 
