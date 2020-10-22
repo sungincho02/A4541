@@ -1,6 +1,6 @@
 // declaration file for Music class
 #include <iostream>
-#include <string.h>
+#include <cstring>
 #include "Media.h"
 
 using namespace std;
@@ -8,15 +8,15 @@ using namespace std;
 class Music: public Media {
  public:
   // constructor
-  Music(string* ntitle, int nyear, string* artist, int nduration, string* npublisher);
+  Music(char ntitle[], int nyear, char artist[], int nduration, char npublisher[]);
   // destructor
   ~Music();
   // accessors
-  string* getArtist();
+  char getArtist();
   int getDuration();
-  string* getPublisher();
+  char getPublisher();
  private:
-  string* artist;
+  char artist[99];
   int duration;
-  string* publisher;
+  char publisher[99];
 };
