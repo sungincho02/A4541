@@ -12,7 +12,7 @@ class Movie: public Media {
   // destructor
   ~Movie();
   // accessors
-  char getDirector();
+  char* getDirector();
   int getDuration();
   float getRating();
  private:
