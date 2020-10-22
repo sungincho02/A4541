@@ -12,7 +12,7 @@ class Videogame: public Media {
   // destructor
   ~Videogame();
   // accessors
-  char getPublisher();
+  char* getPublisher();
   float getRating();
  private:
   char publisher[99];
