@@ -15,7 +15,7 @@ Movie::Movie(char ntitle[], int nyear, char ndirector[], int nduration, float nr
 
 Movie::~Movie() {};
 
-char Movie::getDirector() {
+char* Movie::getDirector() {
   return director;
 }
 
