@@ -12,9 +12,9 @@ class Music: public Media {
   // destructor
   ~Music();
   // accessors
-  char getArtist();
+  char* getArtist();
   int getDuration();
-  char getPublisher();
+  char* getPublisher();
  private:
   char artist[99];
   int duration;
