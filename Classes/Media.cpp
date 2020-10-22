@@ -1,11 +1,11 @@
 // implementation file for Media class
 #include <iostream>
-#include <string.h>
+#include <cstring>
 #include "Media.h"
 
 using namespace std;
 
-string* Media::getTitle() {
+char Media::getTitle() {
   return title;
 }
 
@@ -13,7 +13,7 @@ int Media::getYear() {
   return year;
 }
 
-void Media::setTitle(string* ntitle) {
+void Media::setTitle(char ntitle[]) {
   title = ntitle;
 }
 
