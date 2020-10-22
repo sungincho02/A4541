@@ -47,32 +47,32 @@ int main() {
     cin.get(input, 99);
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    if (input == "ADD") {
+    if (strcmp(input, "ADD") == 0) {
       // prompt for the type of digital media
       cout << "\nChoose a digital media you want to add:\n1) Video Game\n2) Music\n3) Movie" << endl;
       cin.get(input, 99);
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-      if (input == "1") {
+      if (strcmp(input, "1") == 0) {
 	addVG();
       }
-      else if (input == "2") {
+      else if (strcmp(input, "2") == 0) {
 	addMusic();
       }
-      else if (input == "3") {
+      else if (strcmp(input, "3") == 0) {
 	addMovie();
       }
       else {
 	cout << "Invalid command" << endl;
       }
     }
-    else if (input == "SEARCH") {
+    else if (strcmp(input, "SEARCH") == 0) {
       search();
     }
-    else if (input == "DELETE") {
+    else if (strcmp(input, "DELETE") == 0) {
       del();
     }
-    else if (input == "QUIT") {
+    else if (strcmp(input, "QUIT") == 0) {
       quit = true;
     }
     else {
