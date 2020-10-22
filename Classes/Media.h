@@ -10,12 +10,12 @@ using namespace std;
 class Media {
  public:
   // accessors
-  virtual char* getTitle();
+  virtual char getTitle();
   virtual int getYear();
-  virtual void setTitle(char* ntitle);
+  virtual void setTitle(char ntitle[]);
   virtual void setYear(int nyear);
  private:
-  char* title[99];
+  char title[99];
   int year;
 };
 
