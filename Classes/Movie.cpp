@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Movie::Movie(char ntitle[], int nyear, string* ndirector, int nduration, float nrating) {
+Movie::Movie(char ntitle[], int nyear, char ndirector[], int nduration, float nrating) {
   setTitle(ntitle);
   setYear(nyear);
   director = ndirector;
