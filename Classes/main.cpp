@@ -97,6 +97,7 @@ void addVG() {
   
   cout << "Year:" << endl;
   cin >> year;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
   cout << "Publisher:" << endl;
   cin.get(publisher, 99);
@@ -104,6 +105,7 @@ void addVG() {
 
   cout << "Rating;" << endl;
   cin >> rating;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
   // create new Videogame and add to the list
   Media* nmedia = new Videogame(title, year, publisher, rating);
@@ -126,6 +128,7 @@ void addMusic() {
   
   cout << "Year:" << endl;
   cin >> year;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
   cout << "Artist:" << endl;
   cin.get(artist, 99);
@@ -133,6 +136,7 @@ void addMusic() {
 
   cout << "Duration:" << endl;
   cin >> duration;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
   
   cout << "Publisher:" << endl;
   cin.get(publisher, 99);
@@ -159,6 +163,7 @@ void addMovie() {
   
   cout << "Year:" << endl;
   cin >> year;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
   cout << "Director:" << endl;
   cin.get(director, 99);
@@ -166,9 +171,11 @@ void addMovie() {
 
   cout << "Duration:" << endl;
   cin >> duration;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
   
   cout << "Rating;" << endl;
   cin >> rating;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
   // create a new Movie and add to the list
   Media* nmedia = new Movie(title, year, director, duration, rating);
@@ -210,6 +217,7 @@ void search() {
     // print all digital media with matching year
     cout << "\nEnter the year:" << endl;
     cin >> syear;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     for (int i = 0; i < list.size(); i++) {
       if (list.at(i)->getYear() == syear) {
@@ -300,6 +308,7 @@ void del() {
     // search and print result
     cout << "\nEnter the year:" << endl;
     cin >> syear;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     dyear = syear;
 
     for (int i = 0; i < list.size(); i++) {
