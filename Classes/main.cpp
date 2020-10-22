@@ -351,7 +351,7 @@ void del() {
 
 // check for title match
 bool titleMatch(Media* media) {
-  return (media->getTitle() == dtitle);
+  return (strcmp(media->getTitle(), dtitle) == 0);
 }
 
 // check for year match
