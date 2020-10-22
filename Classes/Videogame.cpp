@@ -1,11 +1,11 @@
 // implementation file for Videogame class
 #include <iostream>
-#include <string.h>
+#include <cstring>
 #include "Videogame.h"
 
 using namespace std;
 
-Videogame::Videogame(string* ntitle, int nyear, string* npublisher, float nrating) {
+Videogame::Videogame(char ntitle[], int nyear, char npublisher[], float nrating) {
   setTitle(ntitle);
   setYear(nyear);
   publisher = npublisher;
@@ -14,7 +14,7 @@ Videogame::Videogame(string* ntitle, int nyear, string* npublisher, float nratin
 
 Videogame::~Videogame() {}
 
-string* Videogame::getPublisher() {
+char Videogame::getPublisher() {
   return publisher;
 }
 
