@@ -8,7 +8,7 @@ using namespace std;
 Movie::Movie(char ntitle[], int nyear, char ndirector[], int nduration, float nrating) {
   setTitle(ntitle);
   setYear(nyear);
-  director = ndirector;
+  strcpy(director, ndirector);
   duration = nduration;
   rating = nrating;
 }
