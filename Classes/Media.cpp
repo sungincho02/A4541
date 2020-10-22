@@ -14,7 +14,7 @@ int Media::getYear() {
 }
 
 void Media::setTitle(char ntitle[]) {
-  title = *ntitle;
+  strcpy(title, ntitle);
 }
 
 void Media::setYear(int nyear) {
