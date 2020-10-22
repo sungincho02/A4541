@@ -8,7 +8,7 @@ using namespace std;
 class Videogame: public Media {
  public:
   // constructor
-  Videogame(char ntitle, int nyear, char npublisher, float nrating);
+  Videogame(char ntitle[], int nyear, char npublisher[], float nrating);
   // destructor
   ~Videogame();
   // accessors
