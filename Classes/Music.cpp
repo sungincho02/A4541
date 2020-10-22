@@ -8,9 +8,9 @@ using namespace std;
 Music::Music(char ntitle[], int nyear, char nartist[], int nduration, char npublisher[]) {
   setTitle(ntitle);
   setYear(nyear);
-  artist = nartist;
+  strcpy(artist, nartist);
   duration = nduration;
-  publisher = npublisher;
+  strcpy(publisher, npublisher);
 }
 
 Music::~Music() {}
