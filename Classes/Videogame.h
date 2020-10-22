@@ -1,6 +1,6 @@
 // declaration file for Videogame class
 #include <iostream>
-#include <string.h>
+#include <cstring>
 #include "Media.h"
 
 using namespace std;
@@ -8,13 +8,13 @@ using namespace std;
 class Videogame: public Media {
  public:
   // constructor
-  Videogame(string* ntitle, int nyear, string* npublisher, float nrating);
+  Videogame(char ntitle, int nyear, char npublisher, float nrating);
   // destructor
   ~Videogame();
   // accessors
-  string* getPublisher();
+  char getPublisher();
   float getRating();
  private:
-  string* publisher;
+  char publisher[99];
   float rating;
 };
