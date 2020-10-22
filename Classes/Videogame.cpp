@@ -8,7 +8,7 @@ using namespace std;
 Videogame::Videogame(char ntitle[], int nyear, char npublisher[], float nrating) {
   setTitle(ntitle);
   setYear(nyear);
-  publisher = npublisher;
+  strcpy(publisher, npublisher);
   rating = nrating;
 }
 
