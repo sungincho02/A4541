@@ -260,7 +260,7 @@ void del() {
     cout << "\nEnter the title:" << endl;
     cin.get(input, 99);
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    dtitle = input;
+    strcpy(dtitle, input);
     
     for (int i = 0; i < list.size(); i++) {
       if (strcmp(list.at(i)->getTitle(), input) == 0) {
