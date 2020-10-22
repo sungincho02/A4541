@@ -212,7 +212,7 @@ void search() {
     cin >> syear;
 
     for (int i = 0; i < list.size(); i++) {
-      if (list.at(i)->getYear() == input) {
+      if (list.at(i)->getYear() == syear) {
 	print(list.at(i));
 	nf = false;
       }
