@@ -139,7 +139,7 @@ void addMusic() {
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
   // create new Music and add to the list
-  Media* nmedia = new Music(new string(title), year, new string(artist), duration, new string(publisher));
+  Media* nmedia = new Music(title, year, artist, duration, publisher);
   list.push_back(nmedia);
   cout << "Music added" << endl;
 }
@@ -171,7 +171,7 @@ void addMovie() {
   cin >> rating;
 
   // create a new Movie and add to the list
-  Media* nmedia = new Movie(new string(title), year, new string(director), duration, rating);
+  Media* nmedia = new Movie(title, year, director, duration, rating);
   list.push_back(nmedia);
   cout << "Movie added" << endl;
 }
@@ -342,7 +342,7 @@ void del() {
 
 // check for title match
 bool titleMatch(Media* media) {
-  return (*(media->getTitle()) == dtitle);
+  return (media->getTitle() == dtitle);
 }
 
 // check for year match
