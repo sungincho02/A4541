@@ -14,15 +14,14 @@ Room::Room(char ndescription[]) {
 Room::~Room() {};
 
 void Room::setExit(char direction, Room* neighbor) {
-  exits.insert({direction, neighbor});
+  exits.insert(pair<char, Room*>(direction, neighbor));
 }
 
 char* Room::getDescription() {
-  return "You are now in a room " + description + "."; 
+  return description; 
 }
 
-char* Room::getExit() {
-  char exitStr[99];
+char* Room::getExit(char exitStr[99]) {
   strcpy(exitStr, "Exits:");
   for(auto itr = exits.begin(); itr != exits.end(); ++itr) {
     strcat(exitStr, "\n" + itr->first);
