@@ -2,9 +2,9 @@
 #include <cstring>
 #include <vector>
 #include <limits>
-#include <iterator>
 #include <map>
 #include <algorithm>
+#include <ctime>
 #include "Room.h"
 
 using namespace std;
@@ -53,7 +53,7 @@ Room *mouse = new Room(0, (char*)"a mouse statue."),
 
 int main() {
   setup();
-  cout << "You wake up in a room with a bizzare pig statue. As you look around, you realize that you are in somekind of a dungeon." << endl;
+  cout << "You wake up in a room with a bizarre pig statue. As you look around, you realize that you are in somekind of a dungeon." << endl;
   cout << "\nSuddenly an unfamiliar echoing voice inside your head says\n\"Light up the four torches hidden in the dungeon and the dragon shall take you home.\"" << endl;
   cout << "Strange as it might sound, you decided to follow what the voice was saying to escape from this dungeon." << endl;
   cout << "\nType 'help' if you need help." << endl;
@@ -68,6 +68,7 @@ int main() {
       move();
     }
     else if (command == 'i') {
+      cout << "Inventory:" << endl;
       printInv();
     }
     else if (command == 'u') {
@@ -80,6 +81,8 @@ int main() {
       cout << "Invalid command." << endl;
     }
   }
+
+  cout << "As soon as you fit the dragon scale onto the dragon statue, the statue starts to rumble.\nYou quickly hop onto it and the statue eventually turns into a real dragon.\nThe dragon takes off, flying through the gateway, and takes you home while you're holding onto it as hard as you can to not fall off.\nAfter a few minute, you finally arrive back home and so this bizarre adventure comes to an end..." << endl;  
   
   return 0;
 }
@@ -117,6 +120,8 @@ void prompt() {
 }
 
 void setup() {
+  srand(time(nullptr));
+  
   fill_n(event, 14, false);
   
   mouse->setExit(E, tiger);
@@ -225,32 +230,47 @@ void checkEvent() {
       if (i == 0) {
 	cout << "You found a key lying on the floor; A sheep is engraved on its handle. This might come in use later." << endl;
 	cout << "<Sheep Key> is added to your inventory." << endl;
-	//add to inv
+	Item* sheepKey = new Item();
+	sheepKey->index = 0;
+	strcpy(sheepKey->name, "Sheep Key");
+	inventory.push_back(sheepKey);
 	event[0] = true; 
       }
       else if (i == 1) {
 	cout << "You found a piece of map lying on the floor. The left side of it is torn off but this is still probably useful." << endl;
 	cout << "<Map 2> is added to your inventory." << endl;
-	//add to inv
+	Item* map2 = new Item();
+	map2->index = 1;
+	strcpy(map2->name, "Map 2");
+	inventory.push_back(map2);
 	event[1] = true;
       }
       else if (i == 2) {
 	cout << "As you look closer into it, you found a glowing scale in its mouth. Only animal you can think of with a scale this big is dragon." << endl;
 	cout << "<Dragon Scale?> is added to your inventory." << endl;
-	//add to inv
+	Item* dragonScale = new Item();
+	dragonScale->index = 2;
+	strcpy(dragonScale->name, "Dragon Scale?");
+	inventory.push_back(dragonScale);
 	event[2] = true;
       }
       else if (i == 3) {
 	cout << "Next to it, you see a rabbit's foot. There's a tag on it that says\n\"This can take you to wherever you want but only if you are lucky enough.\"" << endl;
 	cout << "<Rabbit's foot> is added to your inventory." << endl;
-	//add to inv
+	Item* rabbitFoot = new Item();
+	rabbitFoot->index = 3;
+	strcpy(rabbitFoot->name, "Rabbit's Foot");
+	inventory.push_back(rabbitFoot);
 	event[3] = true;
       }
       else if (i == 6) {
 	cout << "You found a piece of map lying on the floor. The right side of it is torn off but this is still probably useful." << endl;
 	cout << "<Map 1> is added to your inventory." << endl;
-	//add to inv
-	event[1] = true;
+	Item* map1 = new Item();
+	map1->index = 4;
+	strcpy(map1->name, "Map 1");
+	inventory.push_back(map1);
+	event[4] = true;
       }
       else if (i == 7) {
 	cout << "You see a locked chest next to it. It looks like the only way to open it is to find the key." << endl;
@@ -258,7 +278,10 @@ void checkEvent() {
       else if (i == 8) {
 	cout << "It's holding a key in its hand. The key has a chicken engraving on its handle. This might come in use later." << endl;
 	cout << "<Chicken Key> is added to your inventory." << endl;
-	//add to inv
+	Item* chickenKey = new Item();
+	chickenKey->index = 6;
+	strcpy(chickenKey->name, "Chicken Key");
+	inventory.push_back(chickenKey);
 	event[7] = true;
       }
       else if (i == 9) {
@@ -267,7 +290,10 @@ void checkEvent() {
       else if (i == 10) {
 	cout << "There's a bell attached to its collar. There's also a note next to it that says\n\"Ring the bell and you will always find yourself alongside the dog.\"" << endl;
 	cout << "<Bell> is added to your inventory." << endl;
-	//add to inv
+	Item* bell = new Item();
+	bell->index = 8;
+	strcpy(bell->name, "Bell");
+	inventory.push_back(bell);
 	event[10] = true;
       }
     }
@@ -277,14 +303,14 @@ void checkEvent() {
   }
   else if (i == 4) {
     if (event[4]) {
-      cout << "The giant gateway above it is open but nothing is happening. Finding the missing scale of the dragon statue might do the job." << endl;
+      cout << "The giant gateway above it is open but nothing is happening. Returning the missing scale of the dragon statue might do the job." << endl;
     }
     else {
       cout << "There's also a giant gateway above it but it's sealed shut. Lighting up all four torches might open it up." << endl;
     }
   }
   else if (i == 5) {
-    cout << "You see a scripture next to it that says\n\nYou shall find the path to your destination when you turn your back against it.\"\nThis could be an hint to navigating this dungeon..." << endl; 
+    cout << "You see a scripture next to it that says\n\"You shall find the path to your destination when you turn your back against it.\"\nThis could be an hint to navigating this dungeon..." << endl; 
   }
   else if (i > 11) {
     if (event[i]) {
@@ -329,9 +355,145 @@ void move() {
 }
 
 void printInv() {
-  
+  for (int i = 1; i <= inventory.size(); i++) {
+    cout << i << ") " << inventory[i - 1]->name << endl;
+  }
 }
 
 void useItem() {
+  cout << "Enter the item number of the item you want to use:" << endl;
+  printInv();
+  prompt();
+  if (isdigit(command)) {
+    int n = (int)command - 48;
+    int r = cRoom->getIndex();
+    if (n <= inventory.size()) {
+      int i = inventory[n - 1]->index;
 
+      if (i == 0) {
+	if (r == 7 && event[7] == false) {
+	  cout << "You unlocked the chest with the key and found a rope inside the chest!" << endl;
+	  cout << "<Rope> is added to your inventory." << endl;
+	  Item* rope = new Item();
+	  rope->index = 5;
+	  strcpy(rope->name, "Rope");
+	  inventory.push_back(rope);
+	  event[7] = true;
+	}
+	else if (r == 9 && event[9] == false) {
+	  cout << "you tried to unlock the chest with the key but it doesn't seem to fit..." << endl;
+	}
+	else {
+	  cout << "You can't use that here." << endl;
+	}
+      }
+      else if (i == 1) {
+	cout << "The map looks like this:" << endl;
+	cout << " ________ ________ " << endl;
+	cout << " )       |        |" << endl;
+	cout << "(   I    | Tiger  |" << endl;
+	cout << " )       |        |" << endl;
+	cout << "(________|________|" << endl;
+	cout << " )       |        |" << endl;
+	cout << "( Dragon | Snake  |" << endl;
+	cout << " )       |        |" << endl;
+	cout << "(________|________|" << endl;
+	cout << " )       |        |" << endl;
+	cout << "( Monkey |  III   |" << endl;
+	cout << " )       |        |" << endl;
+	cout << "(________|________|" << endl;
+	cout << " )       |        |" << endl;
+	cout << "(  Dog   |  Pig   |" << endl;
+	cout << " )       |        |" << endl;
+	cout << "(________|________|" << endl;
+      }
+      else if (i == 2) {
+	if (r == 4) {
+	  if (event[12] == true && event[13] == true && event[14] == true && event[15] == true) {
+	    finish = true;
+	  }
+	  else {
+	    cout << "The gateway isn't open yet. Maybe you should try fitting it after the gateway opens." << endl;
+	  }
+	}
+	else {
+	  cout << "You can't use that here." << endl;
+	}
+      }
+      else if (i == 3) {
+	int random = rand() % 16;
+	for (int a = 0; a < 16; a++) {
+	  if (list[a]->getIndex() == random) {
+	    cRoom = list[a];
+	  }
+	}
+	cout << "While holding the rabbit's foot, you closed your eyes and opened them after few seconds...\n" << endl;
+	currentRoom();
+      }
+      else if (i == 4) {
+	cout << "The map looks like this:" << endl;
+	cout << " ________ ________ " << endl;
+	cout << "|        |        )" << endl;
+	cout << "| Mouse  |  Cow  ( " << endl;
+	cout << "|        |        )" << endl;
+	cout << "|________|_______( " << endl;
+	cout << "|        |        )" << endl;
+	cout << "|   II   | Rabbit( " << endl;
+	cout << "|        |        )" << endl;
+	cout << "|________|_______( " << endl;
+	cout << "|        |        )" << endl;
+	cout << "| Horse  | Sheep ( " << endl;
+	cout << "|        |        )" << endl;
+	cout << "|________|_______( " << endl;
+	cout << "|        |        )" << endl;
+	cout << "|Chicken |   IV  ( " << endl;
+	cout << "|        |        )" << endl;
+	cout << "|________|_______( " << endl;
+      }
+      else if (i == 5 || i == 7) {
+	if (r > 11) {
+	  if (event[7] == true && event[9] == true) {
+	    cout << "You climbed up the torch with the rope and lighted it up using a match." << endl;
+	    event[r] = true;
+	  }
+	  else if (event[9] == false) {
+	    cout << "You climbed up the torch with the rope but you don't have anything to light it up..." << endl;
+	  }
+	  else if (event[7] == false) {
+	    cout << "You tried to light up the torch using a match but the torch is too high for you to reach..." << endl;
+	  }
+	}
+	else {
+	  cout << "You can't you that here." << endl;
+	}
+      }
+      else if (i == 6) {
+	if (r == 9 && event[9] == false) {
+	  cout << "You unlocked the chest with the key and found a matchbox full of matches inside the chest!" << endl;
+	  cout << "<Matchbox> is added to your inventory." << endl;
+	  Item* matchbox = new Item();
+	  matchbox->index = 7;
+	  strcpy(matchbox->name, "Matchbox");
+	  inventory.push_back(matchbox);
+	  event[9] = true;
+	}
+	else if (r == 7 && event[7] == false) {
+	  cout << "you tried to unlock the chest with the key but it doesn't seem to fit..." << endl;
+	}
+	else {
+	  cout << "You can't use that here." << endl;
+	}
+      }
+      else if (i == 8) {
+	cRoom = dog;
+	cout << "You closed your eyes and rang the bell. By the time you open your eyes, you realize that you are back in the room with the dog statue." << endl;
+      }
+    }
+    else {
+      cout << "Invalid command" << endl;
+    }
+  }
+  else {
+    cout << "Invalid command" << endl;
+  }
 }
