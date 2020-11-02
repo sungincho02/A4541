@@ -1,3 +1,10 @@
+/*
+ * Project: Zuul
+ * Author: Sungin Cho
+ * Date: 11/1/20
+ * Instructor: Jason Galbraith
+ * Description: This is a program of a simple text-based adventure game
+ */
 #include <iostream>
 #include <cstring>
 #include <vector>
@@ -9,11 +16,13 @@
 
 using namespace std;
 
+//struct for items
 struct Item {
   int index;
   char name[99];
 };
 
+// function prototypes
 void prompt();
 void setup();
 void checkEvent();
@@ -23,11 +32,13 @@ void move();
 void printInv();
 void useItem();
 
+// constant variables
 const char E = 'E';
 const char W = 'W';
 const char S = 'S';
 const char N = 'N';
 
+// global variables including the rooms
 vector<Room*> list;
 Room* cRoom;
 vector<Item*> inventory;
@@ -53,11 +64,13 @@ Room *mouse = new Room(0, (char*)"a mouse statue."),
 
 int main() {
   setup();
+  // introduction message
   cout << "You wake up in a room with a bizarre pig statue. As you look around, you realize that you are in somekind of a dungeon." << endl;
   cout << "\nSuddenly an unfamiliar echoing voice inside your head says\n\"Light up the four torches hidden in the dungeon and the dragon shall take you home.\"" << endl;
   cout << "Strange as it might sound, you decided to follow what the voice was saying to escape from this dungeon." << endl;
   cout << "\nType 'help' if you need help." << endl;
   
+  // resolve commands until game is finished
   while (!finish) {
     prompt();
 
@@ -88,6 +101,7 @@ int main() {
   return 0;
 }
 
+// take an input and identify which command it is
 void prompt() {
   char input[99];
   cout << "\n> ";
@@ -123,11 +137,15 @@ void prompt() {
   cout << endl;
 }
 
+// game initial setup
 void setup() {
+  // randomize
   srand(time(nullptr));
   
+  // no events encountered
   fill_n(event, 14, false);
   
+  // set exits for every room
   mouse->setExit(E, tiger);
   mouse->setExit(W, cow);
   mouse->setExit(S, chicken);
@@ -224,11 +242,15 @@ void setup() {
   torch4->setExit(N, cow);
   list.push_back(torch4);
 
+  // start in pig room
   cRoom = pig;
 }
 
+// check for any room event
 void checkEvent() {
   int i = cRoom->getIndex();
+	
+  // resolve a room event if it hasn't been done so before
   if (i < 11 && i != 4 && i != 5) {
     if (!event[i]) {
       if (i == 0) {
@@ -326,11 +348,13 @@ void checkEvent() {
   }
 }
 
+// print current room information
 void currentRoom() {
   cout << "You are now in a room with " << cRoom->getDescription() << endl;
   checkEvent();
 }
 
+// print out command words and hint
 void help() {
   cout << "Commands:" << endl;
   cout << "move - This command will ask you for the direction you want to move and move you to the chosen direction" << endl;
@@ -347,6 +371,7 @@ void help() {
   }
 }
 
+// move to a different room
 void move() {
   cRoom->printExit();
   prompt();
@@ -359,12 +384,14 @@ void move() {
   }
 }
 
+// print items in the inventory
 void printInv() {
   for (int i = 1; i <= inventory.size(); i++) {
     cout << i << ") " << inventory[i - 1]->name << endl;
   }
 }
 
+// use an item in the inventory
 void useItem() {
   cout << "Enter the item number of the item you want to use:" << endl;
   printInv();
