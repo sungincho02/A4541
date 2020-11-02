@@ -29,7 +29,7 @@ void checkEvent();
 void currentRoom();
 void help();
 void move();
-void printInv();
+void printInv(vector<Item*> items);
 void useItem();
 
 // constant variables
@@ -42,6 +42,7 @@ const char N = 'N';
 vector<Room*> list;
 Room* cRoom;
 vector<Item*> inventory;
+vector<vector<Item*>> roomInv = { {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} };
 char command;
 bool event[16];
 bool finish = false;
@@ -82,7 +83,13 @@ int main() {
     }
     else if (command == 'i') {
       cout << "Inventory:" << endl;
-      printInv();
+      printInv(inventory);
+    }
+    else if (command == 'd') {
+      drop();
+    }
+    else if (command == 'g') {
+      grab();
     }
     else if (command == 'u') {
       useItem();
@@ -115,6 +122,12 @@ void prompt() {
   }
   else if (strcmp(input, "inventory") == 0) {
     command = 'i';
+  }
+  else if (strcmp(input, "grab") == 0) {
+    command = 'g';
+  }
+  else if (strcmp(input, "drop") == 0) {
+    command = 'd';
   }
   else if (strcmp(input, "item") == 0) {
     command = 'u';
@@ -351,6 +364,9 @@ void checkEvent() {
 // print current room information
 void currentRoom() {
   cout << "You are now in a room with " << cRoom->getDescription() << endl;
+  cout << "Items in the room:" << endl;
+  printInv(roomInv[cRoom->getIndex()]);
+  cout << endl;
   checkEvent();
 }
 
@@ -359,6 +375,8 @@ void help() {
   cout << "Commands:" << endl;
   cout << "move - This command will ask you for the direction you want to move and move you to the chosen direction" << endl;
   cout << "inventory - This command will print out the items in your possesion" << endl;
+  cout << "drop - This command will ask you for the item you want to drop and drop the chosen item" << endl;
+  cout << "grab - This command will ask you for the item you wnat to grab and grab the chosen item" << endl;
   cout << "item - This command will ask you for the item you want to use and use the chosen item (all items are reusable)" << endl;
   cout << "room - This command will describe the room you are currently in" << endl;
   cout << "quit - This command will end the game" << endl;
@@ -384,17 +402,64 @@ void move() {
   }
 }
 
-// print items in the inventory
-void printInv() {
-  for (int i = 1; i <= inventory.size(); i++) {
-    cout << i << ") " << inventory[i - 1]->name << endl;
+// print items in the given inventory
+void printInv(vector<Item*> items) {
+  for (int i = 1; i <= items.size(); i++) {
+    cout << i << ") " << items[i - 1]->name << endl;
+  }
+  if (items.size() == 0) {
+    cout << "(No items)" << endl;
+  }
+}
+
+// transfer an item from inventory to room
+void drop() {
+  cout << "Enter the item number of the item you want to drop:" << endl;
+  printInv(inventory);
+  prompt();
+  if (isdigit(command)) {
+    int n = (int)command - 48;
+    int r = cRoom->getIndex();
+    if (n <= inventory.size()) {
+      roomInv[r].push_back(inventory[n - 1]);
+      inventory.erase(inventory.begin() + (n - 1));
+      cout << "Item dropped" << endl;
+    }
+    else {
+      cout << "Invalid command" << endl;
+    }
+  }
+  else {
+    cout << "Invalid command" << endl;
+  }
+}
+
+// transfer an item from room to inventory
+void grab() {
+  cout << "Enter the item number of the item you want to grab:" << endl;
+  int r = cRoom->getIndex();
+  printInv(roomInv[r]);
+  prompt();
+  if (isdigit(command)) {
+    int n = (int)command - 48;
+    if (n <= roomInv[r].size()) {
+      inventory.push_back(roomInv[r][n - 1]);
+      roomInv[r].erase(roomInv[r].begin() + (n - 1));
+      cout << "Item grabbed" << endl;
+    }
+    else {
+      cout << "Invalid command" << endl;
+    }
+  }
+  else {
+    cout << "Invalid command" << endl;
   }
 }
 
 // use an item in the inventory
 void useItem() {
   cout << "Enter the item number of the item you want to use:" << endl;
-  printInv();
+  printInv(inventory);
   prompt();
   if (isdigit(command)) {
     int n = (int)command - 48;
@@ -485,14 +550,24 @@ void useItem() {
       }
       else if (i == 5 || i == 7) {
 	if (r > 11) {
-	  if (event[7] == true && event[9] == true) {
+	  bool hasRope = false;
+	  bool hasMatch = false;
+	  for (int a = 0; a < inventory.size(); a++) {
+	    if (strcmp(inventory[a]->name, "Rope") == 0) {
+	      hasRope = true;
+	    }
+	    else if (strcmp(inventory[a]->name, "Matchbox") == 0) {
+	      hasMatch = true;
+	    }
+	  }
+	  if (hasRope == true && hasMatch == true) {
 	    cout << "You climbed up the torch with the rope and lighted it up using a match." << endl;
 	    event[r] = true;
 	  }
-	  else if (event[9] == false) {
+	  else if (hasMatch == false) {
 	    cout << "You climbed up the torch with the rope but you don't have anything to light it up..." << endl;
 	  }
-	  else if (event[7] == false) {
+	  else if (hasRope == false) {
 	    cout << "You tried to light up the torch using a match but the torch is too high for you to reach..." << endl;
 	  }
 	}
