@@ -7,11 +7,16 @@
 
 using namespace std;
 
-Room::Room(char ndescription[]) {
+Room::Room(int nindex, char ndescription[]) {
+  index = nindex;
   strcpy(description, ndescription);
 }
 
 Room::~Room() {};
+
+int Room::getIndex() {
+  return index;
+}
 
 void Room::setExit(char direction, Room* neighbor) {
   exits.insert(pair<char, Room*>(direction, neighbor));
@@ -21,12 +26,11 @@ char* Room::getDescription() {
   return description; 
 }
 
-char* Room::getExit(char exitStr[99]) {
-  strcpy(exitStr, "Exits:");
+void Room::printExit() {
+  cout << "Choose a direction to move:" << endl;
   for(auto itr = exits.begin(); itr != exits.end(); ++itr) {
-    strcat(exitStr, "\n" + itr->first);
+    cout << itr->first << endl; 
   }
-  return exitStr;
 }
 
 Room* Room::getNeighbor(char direction) {

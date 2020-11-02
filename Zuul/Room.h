@@ -11,15 +11,17 @@ using namespace std;
 class Room {
  public:
   // constructor
-  Room(char ndescription[]);
+  Room(int nindex, char ndescription[]);
   // destructor
   ~Room();
   // accessors
+  int getIndex();
   void setExit(char direction, Room* neighbor);
   char* getDescription();
-  char* getExit(char exitStr[99]);
+  void printExit();
   Room* getNeighbor(char direction);
  private:
+  int index;
   char description[99];
   map<char, Room*> exits; 
 };
