@@ -341,7 +341,7 @@ void checkEvent() {
     }
   }
   else if (i == 4) {
-    if (event[4]) {
+    if (event[12] == true && event[13] == true && event[14] == true && event[15] == true) {
       cout << "The giant gateway above it is open but nothing is happening. Returning the missing scale of the dragon statue might do the job." << endl;
     }
     else {
