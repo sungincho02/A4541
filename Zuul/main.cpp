@@ -480,7 +480,7 @@ void useItem() {
 	  event[7] = true;
 	}
 	else if (r == 9 && event[9] == false) {
-	  cout << "you tried to unlock the chest with the key but it doesn't seem to fit..." << endl;
+	  cout << "You tried to unlock the chest with the key but it doesn't seem to fit..." << endl;
 	}
 	else {
 	  cout << "You can't use that here." << endl;
@@ -588,7 +588,7 @@ void useItem() {
 	  event[9] = true;
 	}
 	else if (r == 7 && event[7] == false) {
-	  cout << "you tried to unlock the chest with the key but it doesn't seem to fit..." << endl;
+	  cout << "You tried to unlock the chest with the key but it doesn't seem to fit..." << endl;
 	}
 	else {
 	  cout << "You can't use that here." << endl;
