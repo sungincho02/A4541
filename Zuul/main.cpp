@@ -30,6 +30,8 @@ void currentRoom();
 void help();
 void move();
 void printInv(vector<Item*> items);
+void drop();
+void grab();
 void useItem();
 
 // constant variables
