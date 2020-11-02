@@ -77,12 +77,13 @@ int main() {
     else if (command == 'r') {
       currentRoom();
     }
+    else if (command == 'q') {
+      finish = true;
+    }
     else {
       cout << "Invalid command." << endl;
     }
   }
-
-  cout << "As soon as you fit the dragon scale onto the dragon statue, the statue starts to rumble.\nYou quickly hop onto it and the statue eventually turns into a real dragon.\nThe dragon takes off, flying through the gateway, and takes you home while you're holding onto it as hard as you can to not fall off.\nAfter a few minute, you finally arrive back home and so this bizarre adventure comes to an end..." << endl;  
   
   return 0;
 }
@@ -106,6 +107,9 @@ void prompt() {
   }
   else if (strcmp(input, "room") == 0) {
     command = 'r';
+  }
+  else if (strcmp(input, "quit") == 0) {
+    command = 'q';
   }
   else if (strcmp(input, "E") == 0 || strcmp(input, "W") == 0 || strcmp(input, "S") == 0 || strcmp(input, "N") == 0) {
     command = input[0];
@@ -333,6 +337,7 @@ void help() {
   cout << "inventory - This command will print out the items in your possesion" << endl;
   cout << "item - This command will ask you for the item you want to use and use the chosen item (all items are reusable)" << endl;
   cout << "room - This command will describe the room you are currently in" << endl;
+  cout << "quit - This command will end the game" << endl;
   cout << "\nHint: ";
   if (event[12] == true && event[13] == true && event[14] == true && event[15] == true) {
     cout << "All four torches are lighted up! Let's head to the dragon and return home!" << endl;
@@ -411,6 +416,7 @@ void useItem() {
 	if (r == 4) {
 	  if (event[12] == true && event[13] == true && event[14] == true && event[15] == true) {
 	    finish = true;
+	    cout << "As soon as you fit the dragon scale onto the dragon statue, the statue starts to rumble.\nYou quickly hop onto it and the statue eventually turns into a real dragon.\nThe dragon takes off, flying through the gateway, and takes you home while you're holding onto it as hard as you can to not fall off.\nAfter a few minute, you finally arrive back home and so this bizarre adventure comes to an end..." << endl;  
 	  }
 	  else {
 	    cout << "The gateway isn't open yet. Maybe you should try fitting it after the gateway opens." << endl;
