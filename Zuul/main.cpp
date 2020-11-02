@@ -309,7 +309,7 @@ void checkEvent() {
 	map1->index = 4;
 	strcpy(map1->name, "Map 1");
 	inventory.push_back(map1);
-	event[4] = true;
+	event[6] = true;
       }
       else if (i == 7) {
 	cout << "You see a locked chest next to it. It looks like the only way to open it is to find the key." << endl;
@@ -321,7 +321,7 @@ void checkEvent() {
 	chickenKey->index = 6;
 	strcpy(chickenKey->name, "Chicken Key");
 	inventory.push_back(chickenKey);
-	event[7] = true;
+	event[8] = true;
       }
       else if (i == 9) {
 	cout << "You see a locked chest next to it. It looks like the only way to open it is to find the key." << endl;
