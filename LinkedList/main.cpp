@@ -153,11 +153,11 @@ void print(Node* current) {
 }
 
 Node* search(int id, Node* current) {
-  if (current->getID() == id) {
+  if (current->getStudent()->getID() == id) {
     return current;
   }
-  else if (current->getNext != NULL) {
-    return search(current->getNext);
+  else if (current->getNext() != NULL) {
+    return search(current->getNext());
   }
   return nullptr;
 }
@@ -196,8 +196,8 @@ void avg() {
   Node* current = lead;
   
   while (current != NULL) {
-    total += current->getGPA();
-    count++
+    total += current->getStudent->getGPA();
+    count++;
     current = current->getNext();
   }
 
