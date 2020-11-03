@@ -12,7 +12,12 @@ Student::Student(char nfn[99], char nln[99], int nid, float ngpa) {
   gpa = ngpa;
 }
 
-Student::~Student() {};
+Student::~Student() {
+  delete[] fn;
+  delete[] ln;
+  delete id;
+  delete gpa;
+}
 
 char* Student::getFirst() {
   return fn;
