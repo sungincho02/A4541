@@ -157,7 +157,7 @@ Node* search(int id, Node* current) {
     return current;
   }
   else if (current->getNext() != NULL) {
-    return search(current->getNext());
+    return search(id, current->getNext());
   }
   return nullptr;
 }
@@ -171,6 +171,10 @@ void del() {
       
   Node* dnode = search(id, lead);
 
+  if (dnode == nullptr) {
+    cout << "\nThat student does not exist" << endl;
+  }
+  
   if (prev(dnode) != nullptr) {
     prev(dnode)->setNext(dnode->getNext());
   }
@@ -182,6 +186,7 @@ void del() {
   }
 
   delete dnode;
+  cout << "\nStudent deleted" << endl;
 }
 
 void avg() {
@@ -196,7 +201,7 @@ void avg() {
   Node* current = lead;
   
   while (current != NULL) {
-    total += current->getStudent->getGPA();
+    total += current->getStudent()->getGPA();
     count++;
     current = current->getNext();
   }
