@@ -5,6 +5,7 @@
 
 using namespace std;
 
+// function prototypes
 void add();
 Node* prev(Node* next);
 void sort();
@@ -13,6 +14,7 @@ Node* search(int id, Node* current);
 void del();
 void avg();
 
+// global variable
 Node* lead = NULL;
 
 int main() {
@@ -59,11 +61,6 @@ void add() {
   int id;
   float gpa;
 
-  // set gpa precision
-  cout.setf(ios::fixed, ios::floatfield);
-  cout.setf(ios::showpoint);
-  cout.precision(2);
-  
   // prompt for the student information
   cout << "\nFirst name: ";
   cin.get(fn, 99);
@@ -93,11 +90,13 @@ void add() {
     newnode->setNext(new Node(new Student(fn, ln, id, gpa)));
   }
 
+  // sort list
   sort();
 
   cout << "\nStudent added" << endl;
 }
 
+// find and return prev Node
 Node* prev(Node* next) {
   Node* current = lead;
   while (current->getNext() != NULL) {
@@ -109,12 +108,14 @@ Node* prev(Node* next) {
   return nullptr;
 }
 
+// sort using bubble sort algorithm based on the student ID (least to greatest)
 void sort() {
   int swap = 0;
   Node* current = lead;
   Node* temp;
   
   while (current->getNext() != NULL) {
+    // swap position if greater than next node
     if (current->getStudent()->getID() > current->getNext()->getStudent()->getID()) {
       if (prev(current) != nullptr) {
 	prev(current)->setNext(current->getNext());
@@ -127,16 +128,19 @@ void sort() {
       current->setNext(temp);
       swap++; 
     }
+    // move on to next node
     else {
       current = current->getNext();
     }  
   }
-  
+
+  // proceed with another pass if there was any swap
   if (swap != 0) {
     sort();
   }
 }
 
+// print all students
 void print(Node* current) {
   if (current != NULL) {
     Student* student = current->getStudent();
@@ -152,6 +156,7 @@ void print(Node* current) {
   }
 }
 
+// find and return the node with the student ID
 Node* search(int id, Node* current) {
   if (current->getStudent()->getID() == id) {
     return current;
@@ -162,6 +167,7 @@ Node* search(int id, Node* current) {
   return nullptr;
 }
 
+// delete a student in the list
 void del() {
   int id;
 
@@ -189,6 +195,7 @@ void del() {
   cout << "\nStudent deleted" << endl;
 }
 
+// print average GPA of the students
 void avg() {
   if (lead == NULL) {
     cout << "\nList is empty" << endl;
