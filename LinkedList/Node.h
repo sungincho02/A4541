@@ -1,4 +1,8 @@
-// header file for Node class
+/*
+ * Author: Sungin Cho
+ * Date: 11/1/20
+ * Description: This is Node class that contains Student pointer and next node pointer for linked lists.
+ */
 #ifndef NODE_H
 #define NODE_H
 
