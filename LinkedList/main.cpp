@@ -9,6 +9,7 @@ void add();
 Node* prev(Node* next);
 void sort();
 void print(Node* current);
+Node* search(int id, Node* current);
 void del();
 void avg();
 
@@ -113,9 +114,6 @@ void sort() {
   Node* current = lead;
   Node* temp;
   
-  cout << "\nBoop!" << endl;
-  cout << "Current: " << current->getStudent()->getID() << endl;
-  
   while (current->getNext() != NULL) {
     if (current->getStudent()->getID() > current->getNext()->getStudent()->getID()) {
       if (prev(current) != nullptr) {
@@ -127,17 +125,11 @@ void sort() {
 	lead = current->getNext();
       }
       current->setNext(temp);
-      swap++;
-      
-      cout << "Swap!" << endl;
-      
+      swap++; 
     }
     else {
       current = current->getNext();
-    }
-    
-    cout << "Current: " << current->getStudent()->getID() << endl;
-    
+    }  
   }
   
   if (swap != 0) {
@@ -160,10 +152,56 @@ void print(Node* current) {
   }
 }
 
-void del() {
+Node* search(int id, Node* current) {
+  if (current->getID() == id) {
+    return current;
+  }
+  else if (current->getNext != NULL) {
+    return search(current->getNext);
+  }
+  return nullptr;
+}
 
+void del() {
+  int id;
+
+  cout << "\nEnter the student ID: ";
+  cin >> id;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      
+  Node* dnode = search(id, lead);
+
+  if (prev(dnode) != nullptr) {
+    prev(dnode)->setNext(dnode->getNext());
+  }
+  else if (dnode->getNext() != NULL) {
+    lead = dnode->getNext();
+  }
+  else {
+    lead = NULL;
+  }
+
+  delete dnode;
 }
 
 void avg() {
+  if (lead == NULL) {
+    cout << "\nList is empty" << endl;
+    return;
+  }
+  
+  float total = 0;
+  int count = 0;
+  float avg;
+  Node* current = lead;
+  
+  while (current != NULL) {
+    total += current->getGPA();
+    count++
+    current = current->getNext();
+  }
 
+  avg = total / count;
+
+  cout << "Average GPA: " << avg << endl;
 }
