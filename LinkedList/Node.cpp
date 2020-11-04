@@ -11,7 +11,7 @@ Node::Node(Student* nstudent) {
 
 Node::~Node() {
   delete student;
-  student = NULL:
+  student = NULL;
   delete next;
   next = NULL;
 }
