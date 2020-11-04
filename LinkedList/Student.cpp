@@ -5,19 +5,14 @@
 
 using namespace std;
 
-Student::Student(char nfn[99], char nln[99], int nid, float ngpa) {
+Student::Student(char nfn[], char nln[], int nid, float ngpa) {
   strcpy(fn, nfn);
   strcpy(ln, nln);
   id = nid;
   gpa = ngpa;
 }
 
-Student::~Student() {
-  delete[] fn;
-  delete[] ln;
-  delete id;
-  delete gpa;
-}
+Student::~Student() {}
 
 char* Student::getFirst() {
   return fn;
