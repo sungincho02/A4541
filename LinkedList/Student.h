@@ -10,7 +10,7 @@ using namespace std;
 class Student {
  public:
   // constructor
-  Student(char nfn[99], char nln[99], int nid, float ngpa);
+  Student(char nfn[], char nln[], int nid, float ngpa);
   // destructor
   ~Student();
   // accessors
