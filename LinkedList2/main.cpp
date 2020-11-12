@@ -90,13 +90,14 @@ int main() {
 }
 
 // find and return prev node
-Node* prev(Node* head, Node* next) {
-  Node* current = head;
-  while (current->getNext() != NULL) {
+Node* prev(Node* head, Node* next, Node* current) {
+  if (current != NULL) {
     if (current->getNext() == next) {
       return current;
     }
-    current = current->getNext();
+    else {
+      return prev(head, next, current->getNext());
+    }
   }
   return nullptr;
 }
@@ -109,7 +110,7 @@ void add(Node* &head, Node* nnode, Node* current) {
       head = nnode;
     }
     else {
-      prev(head, current)->setNext(nnode);
+      prev(head, current, head)->setNext(nnode);
     }
     cout << "\nStudent added" << endl;
   }
@@ -118,7 +119,7 @@ void add(Node* &head, Node* nnode, Node* current) {
       head = nnode;
     }
     else {
-      prev(head, current)->setNext(nnode);
+      prev(head, current, head)->setNext(nnode);
     }
     nnode->setNext(current);
     cout << "\nStudent added" << endl;
@@ -165,7 +166,7 @@ void del(Node* &head, int id, Node* current) {
       head = current->getNext();
     }
     else {
-      prev(head, current)->setNext(current->getNext());
+      prev(head, current, head)->setNext(current->getNext());
     }
     delete current;
     cout << "\nStudent deleted" << endl;
