@@ -6,42 +6,77 @@
 using namespace std;
 
 // function prototypes
-void add();
-Node* prev(Node* next);
-void sort();
-void print(Node* current);
-Node* search(int id, Node* current);
-void del();
-void avg();
-
-// global variable
-Node* lead = NULL;
+Node* prev(Node* head, Node* next);
+void add(Node* &head, Node* nnode, Node* current);
+void print(Node* head, Node* current);
+void del(Node* &head, int id, Node* current);
+void avg(Node* head);
 
 int main() {
+  Node* head = NULL;
   char input[99];
   bool quit = false;
+  char fn[99];
+  char ln[99];
+  int id;
+  float gpa;
 
   // set gpa precision
   cout.setf(ios::fixed, ios::floatfield);
   cout.setf(ios::showpoint);
   cout.precision(2);
 
+  // print commands
+  cout << "\nCommands:" << endl;
+  cout << "ADD" << endl;
+  cout << "PRINT" << endl;
+  cout << "DELETE" << endl;
+  cout << "AVERAGE" << endl;
+  cout << "QUIT" << endl;
+  
   // prompt for command
   while (!quit) {
     cout << "\n> ";
     cin.get(input, 99);
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    
     if (strcmp(input, "ADD") == 0) {
-      add();
+      // prompt for the student information
+      cout << "\nFirst name: ";
+      cin.get(fn, 99);
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+  
+      cout << "Last name: ";
+      cin.get(ln, 99);
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+      cout << "ID: ";
+      cin >> id;
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+      cout << "GPA: ";
+      cin >> gpa;
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+      Node* nnode = new Node(new Student(fn, ln, id, gpa));
+
+      // add the new student to the list
+      add(head, nnode, head);
     }
     else if (strcmp(input, "PRINT") == 0) {
-      print(lead);
+      print(head, head);
     }
     else if (strcmp(input, "DELETE") == 0) {
-      del();
+      // prompt for student id
+      cout << "\nEnter the student ID: ";
+      cin >> id;
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+      // delete the specified student
+      del(head, id, head);
     }
     else if (strcmp(input, "AVERAGE") == 0) {
-      avg();
+      avg(head);
     }
     else if (strcmp(input, "QUIT") == 0) {
       quit = true;
@@ -54,51 +89,9 @@ int main() {
   return 0;
 }
 
-// add a student to the list
-void add() {
-  char fn[99];
-  char ln[99];
-  int id;
-  float gpa;
-
-  // prompt for the student information
-  cout << "\nFirst name: ";
-  cin.get(fn, 99);
-  cin.ignore(numeric_limits<streamsize>::max(), '\n');
-  
-  cout << "Last name: ";
-  cin.get(ln, 99);
-  cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-  cout << "ID: ";
-  cin >> id;
-  cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-  cout << "GPA: ";
-  cin >> gpa;
-  cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-  // create a node for the student and add it to the linked list
-  Node* newnode = lead;
-  if (newnode == NULL) {
-    lead = new Node(new Student(fn, ln, id, gpa));
-  }
-  else {
-    while (newnode->getNext() != NULL) {
-      newnode = newnode->getNext();
-    }
-    newnode->setNext(new Node(new Student(fn, ln, id, gpa)));
-  }
-
-  // sort list
-  sort();
-
-  cout << "\nStudent added" << endl;
-}
-
-// find and return prev Node
-Node* prev(Node* next) {
-  Node* current = lead;
+// find and return prev node
+Node* prev(Node* head, Node* next) {
+  Node* current = head;
   while (current->getNext() != NULL) {
     if (current->getNext() == next) {
       return current;
@@ -108,40 +101,37 @@ Node* prev(Node* next) {
   return nullptr;
 }
 
-// sort using bubble sort algorithm based on the student ID (least to greatest)
-void sort() {
-  int swap = 0;
-  Node* current = lead;
-  Node* temp;
-  
-  while (current->getNext() != NULL) {
-    // swap position if greater than next node
-    if (current->getStudent()->getID() > current->getNext()->getStudent()->getID()) {
-      if (prev(current) != nullptr) {
-	prev(current)->setNext(current->getNext());
-      }
-      temp = current->getNext()->getNext();
-      current->getNext()->setNext(current);
-      if (current == lead) {
-	lead = current->getNext();
-      }
-      current->setNext(temp);
-      swap++; 
+// insert a student to the list in correct position
+void add(Node* &head, Node* nnode, Node* current) {
+  // add the student if end of the list is reached or student with bigger ID number is found
+  if (current == NULL) {
+    if (current == head) {
+      head = nnode;
     }
-    // move on to next node
     else {
-      current = current->getNext();
-    }  
+      prev(head, current)->setNext(nnode);
+    }
+    cout << "\nStudent added" << endl;
   }
-
-  // proceed with another pass if there was any swap
-  if (swap != 0) {
-    sort();
+  else if (nnode->getStudent()->getID() < current->getStudent()->getID()) {
+    if (current == head) {
+      head = nnode;
+    }
+    else {
+      prev(head, current)->setNext(nnode);
+    }
+    nnode->setNext(current);
+    cout << "\nStudent added" << endl;
+  }
+  // if not, check next in the list
+  else {
+    add(head, nnode, current->getNext());
   }
 }
 
 // print all students
-void print(Node* current) {
+void print(Node* head, Node* current) {
+  // print student information
   if (current != NULL) {
     Student* student = current->getStudent();
     
@@ -149,55 +139,46 @@ void print(Node* current) {
     cout << "ID: " << student->getID() << endl;
     cout << "GPA: " << student->getGPA() << endl;
 
-    print(current->getNext());
+    // next student
+    print(head, current->getNext());
   }
-  else if (current == lead) {
+  // notify if list is empty
+  else if (current == head) {
     cout << "\nList is empty" << endl;
   }
 }
 
-// find and return the node with the student ID
-Node* search(int id, Node* current) {
-  if (current->getStudent()->getID() == id) {
-    return current;
+// delete the student with the given student ID
+void del(Node* &head, int id, Node* current) {
+  // notify if the student does not exist in the list
+  if (current == NULL) {
+    if (current == head) {
+      cout << "\nList is empty" << endl;
+    }
+    else {
+      cout << "\nThe student does not exist" << endl;
+    }
   }
-  else if (current->getNext() != NULL) {
-    return search(id, current->getNext());
+  // remove student if ID matches
+  else if (current->getStudent()->getID() == id) {
+    if (current == head) {
+      head = current->getNext();
+    }
+    else {
+      prev(head, current)->setNext(current->getNext());
+    }
+    delete current;
+    cout << "\nStudent deleted" << endl;
   }
-  return nullptr;
-}
-
-// delete a student in the list
-void del() {
-  int id;
-
-  cout << "\nEnter the student ID: ";
-  cin >> id;
-  cin.ignore(numeric_limits<streamsize>::max(), '\n');
-      
-  Node* dnode = search(id, lead);
-
-  if (dnode == nullptr) {
-    cout << "\nThat student does not exist" << endl;
-  }
-  
-  if (prev(dnode) != nullptr) {
-    prev(dnode)->setNext(dnode->getNext());
-  }
-  else if (dnode->getNext() != NULL) {
-    lead = dnode->getNext();
-  }
+  // if not, check next student
   else {
-    lead = NULL;
+    del(head, id, current->getNext());
   }
-
-  delete dnode;
-  cout << "\nStudent deleted" << endl;
 }
 
 // print average GPA of the students
-void avg() {
-  if (lead == NULL) {
+void avg(Node* head) {
+  if (head == NULL) {
     cout << "\nList is empty" << endl;
     return;
   }
@@ -205,7 +186,7 @@ void avg() {
   float total = 0;
   int count = 0;
   float avg;
-  Node* current = lead;
+  Node* current = head;
   
   while (current != NULL) {
     total += current->getStudent()->getGPA();
@@ -215,5 +196,5 @@ void avg() {
 
   avg = total / count;
 
-  cout << "Average GPA: " << avg << endl;
+  cout << "\nAverage GPA: " << avg << endl;
 }
