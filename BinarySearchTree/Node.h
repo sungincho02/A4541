@@ -12,6 +12,7 @@ class Node {
   int getValue();
   Node* getLeft();
   Node* getRight();
+  void setValue(int nvalue);
   void setLeft(Node* nleft);
   void setRight(Node* nright);
  private:

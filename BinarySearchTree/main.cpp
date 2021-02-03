@@ -252,13 +252,9 @@ void remove(Node* &root, Node* prev, Node* current, int key) {
       delete current;
     }
     else if (current->getLeft() != NULL && current->getRight() != NULL) {
-      if (prev->getLeft() == current) {
-	prev->setLeft(inorder(current->getRight()));
-      }
-      else {
-	prev->setRight(inorder(current->getRight()));
-      }
-      delete current;
+      int nvalue = inorder(current->getRight())->getValue();
+      remove(root, NULL, root, nvalue);
+      current->setValue(nvalue);
     }
     else if (current->getLeft() != NULL) {
       if (prev->getLeft() == current) {

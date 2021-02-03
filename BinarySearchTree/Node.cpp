@@ -26,6 +26,10 @@ Node* Node::getRight() {
   return right;
 }
 
+void Node::setValue(int nvalue) {
+  value = nvalue;
+}
+
 void Node::setLeft(Node* nleft) {
   left = nleft;
 }
