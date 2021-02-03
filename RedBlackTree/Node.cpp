@@ -31,6 +31,10 @@ Node* Node::getRight() {
   return right;
 }
 
+void Node::setValue(int nvalue) {
+  value = nvalue;
+}
+
 void Node::setColor(bool ncolor) {
   color = ncolor;
 }

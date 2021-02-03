@@ -13,6 +13,7 @@ class Node {
   bool getColor();
   Node* getLeft();
   Node* getRight();
+  void setValue(int nvalue);
   void setColor(bool ncolor);
   void setLeft(Node* nleft);
   void setRight(Node* nright);
