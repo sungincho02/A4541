@@ -6,6 +6,7 @@
 
 using namespace std;
 
+// function prototype
 void push(Node* &head, Node* token);
 char pop(Node* &head);
 char peek(Node* head);
@@ -17,6 +18,7 @@ void printPostfix(Tree* root);
 void printPrefix(Tree* root);
 
 int main() {
+  // initialization
   char input[50];
   char postfix[50];
   Node* ntoken;
@@ -37,8 +39,9 @@ int main() {
   cin.get(input, 50);
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
   
-  // shutting yard algorithm
+  // shunting yard algorithm
   for (int i = 0; i < strlen(input); i++) {  
+    // add numbers to output queue
     if (isdigit(input[i])) {
       ntoken = new Node(input[i]);
       enqueue(qhead, qtail, ntoken);
@@ -48,6 +51,7 @@ int main() {
       push(stack, ntoken);
     }
     else if (input[i] == ')') {
+      // if right bracket, pop operators into output queue until left bracket is reached
       while (peek(stack) != '(') {
 	ntoken = new Node(' ');
 	enqueue(qhead, qtail, ntoken);
@@ -57,6 +61,7 @@ int main() {
       pop(stack);
     }
     else {
+      // if there's an operator with higher priority, pop them into output queue then push the operator into stack
       ntoken = new Node(' ');
       enqueue(qhead, qtail, ntoken);
       if (input[i] == '+' || input[i] == '-') {
@@ -85,6 +90,7 @@ int main() {
       }
     }
   }
+  // pop the rest of the stack into output queue
   while (stack != NULL) {
     ntoken = new Node(' ');
     enqueue(qhead, qtail, ntoken);
@@ -120,7 +126,7 @@ int main() {
       tnode = new Tree(ttoken);
       push(tstack, tnode);
 
-      // if most recently placed token is an operator, 
+      // if most recently placed token is an operator, form a branch
       if (!isdigit(tstack[0]->getValue()[0])) {
 	root = tstack[0];
 	right = tstack[1];
@@ -138,6 +144,7 @@ int main() {
     }
   }
 
+  // print out infix, postfix, and prefix using the tree
   cout << "\nInfix(tree): ";
   printInfix(root);
   cout << "\nPostfix(tree): ";
@@ -148,6 +155,7 @@ int main() {
   return 0;
 }
 
+// push token into stack
 void push(Node* &head, Node* token) {
   if (head != NULL) {
     token->setNext(head);
@@ -155,6 +163,7 @@ void push(Node* &head, Node* token) {
   head = token;
 }
 
+// pop token off from stack
 char pop(Node* &head) {
   Node* temp = head;
   head = head->getNext();
@@ -164,6 +173,7 @@ char pop(Node* &head) {
   return value;
 }
 
+// peek at stack or queue
 char peek(Node* head) {
   if (head == NULL) {
     return '\0';
@@ -171,6 +181,7 @@ char peek(Node* head) {
   return (head->getValue());
 }
 
+// enqueue token into queue
 void enqueue(Node* &head, Node* &tail, Node* token) {
   if (tail != NULL) {
     tail->setNext(token);
@@ -181,6 +192,7 @@ void enqueue(Node* &head, Node* &tail, Node* token) {
   tail = token;
 }
 
+// dequeue token from queue
 char dequeue(Node* &head, Node* &tail) {
   Node* temp = head;
   head = head->getNext();
@@ -193,6 +205,7 @@ char dequeue(Node* &head, Node* &tail) {
   return value;
 }
 
+// push into stack for constructing tree
 void push(Tree* stack[], Tree* node) {
   for (int i = 49; i > 0; i--) {
     stack[i] = stack[i-1];
@@ -200,6 +213,7 @@ void push(Tree* stack[], Tree* node) {
   stack[0] = node; 
 }
 
+// print out infix notation from the tree
 void printInfix(Tree* root) {
   if (root != NULL) {
     if (!isdigit(root->getValue()[0])) {
@@ -214,6 +228,7 @@ void printInfix(Tree* root) {
   }
 }
 
+// print out postfix notation from the tree
 void printPostfix(Tree* root) {
   if (root != NULL) {
     printPostfix(root->getLeft());
@@ -222,6 +237,7 @@ void printPostfix(Tree* root) {
   }
 }
 
+// print out prefix notation from the tree
 void printPrefix(Tree* root) {
   if (root != NULL) {
     cout << root->getValue() << " ";

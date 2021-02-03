@@ -1,3 +1,4 @@
+// class for expression tree node
 #ifndef TREE_H
 #define TREE_H
 

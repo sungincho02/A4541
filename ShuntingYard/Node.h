@@ -1,3 +1,4 @@
+// class for linked list node
 #ifndef NODE_H
 #define NODE_H
 
