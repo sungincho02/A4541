@@ -1,3 +1,9 @@
+/*
+ * Project: Hash Table
+ * Author: Sungin Cho
+ * Instructor: Jason Galbraith
+ * Description: This is a program for managing a list of students using hash table
+ */
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -5,6 +11,7 @@
 
 using namespace std;
 
+// struct for student
 struct Student {  
   char fn[20];
   char ln[20];
@@ -22,6 +29,7 @@ void del(int size, Student** p, int id);
 void rm(Student** p, Student* prev, Student* s, int index);
 
 int main() {
+  // initialize variables
   ifstream* infn;
   ifstream* inln;
   bool quit = false;
@@ -39,6 +47,7 @@ int main() {
   int size = 100;
   Student* ptr;
 
+  // randomize
   srand(time(NULL));
   
   // create a table
@@ -97,6 +106,7 @@ int main() {
       add(size, p, ptr);
     }
     else if (strcmp(input, "PRINT") == 0) {
+      // print out the list
       print(size, p);
     }
     else if (strcmp(input, "DELETE") == 0) {
@@ -109,6 +119,7 @@ int main() {
       del(size, p, nid);
     }
     else if (strcmp(input, "RANDOM") == 0) {
+      // create sepecified amount of students with random name and gpa
       cout << "\nEnter the number of students to add: ";
       cin >> number;
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -212,12 +223,14 @@ void add(int &size, Student** &p, Student* nstudent) {
   
 }
 
+// print student details
 void detail(Student* s) {
   cout << "\nName: " << s->fn << " " << s->ln << endl;
   cout << "ID: " << s->id << endl;
   cout << "GPA: " << s->gpa << endl;
 }
 
+// print out the list of students
 void print(int size, Student** p) {
   bool empty = true;
   for (int i = 0; i < size; i++) {
@@ -239,6 +252,7 @@ void print(int size, Student** p) {
   }
 }
 
+// find the student to remove
 void del(int size, Student** p, int id) {
   bool empty = true;
   for (int i = 0; i < size; i++) {
@@ -266,6 +280,7 @@ void del(int size, Student** p, int id) {
   }
 }
 
+// remove a student
 void rm(Student** p, Student* prev, Student* s, int index) {
   if (prev != nullptr) {
     prev->next = s->next;
