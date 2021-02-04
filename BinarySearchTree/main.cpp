@@ -6,6 +6,7 @@
 
 using namespace std;
 
+// function prototypes
 int search(Node* current, int gen, int key);
 void insert(Node* current, Node* nnode);
 void print(Node* root, Node* current, bool line[]);
@@ -13,6 +14,7 @@ void remove(Node* &root, Node* prev, Node* current, int key);
 Node* inorder(Node* current);
 
 int main() {
+  // initialization
   char input[99];
   int method;
   int number;
@@ -56,23 +58,26 @@ int main() {
     }
   }
   
-  //
+  // set root
   root = new Node(list[0]);
 
+  // add list into tree
   for (int i = 1; i < size; i++) {
     nnode = new Node(list[i]);
     insert(root, nnode);
   }
 
   bool line[100] = {false};
-  
+
+  // print out possible commands
   cout << "\nCommands:" << endl;
   cout << "ADD" << endl;
   cout << "PRINT" << endl;
   cout << "DELETE" << endl;
   cout << "QUIT" << endl;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
-  // 
+
+  // resolve user commands
   while (!quit) {
     cout << "\n> ";
     cin.get(input, 99);
@@ -123,6 +128,8 @@ int main() {
   return 0;
 }
 
+
+// search for a node and return its level or 0 if it doesn't exist
 int search(Node* current, int gen, int key) {
   if (key < current->getValue()) {
     if (current->getLeft() == NULL) {
@@ -145,6 +152,7 @@ int search(Node* current, int gen, int key) {
   }
 }
 
+// insert a node into the tree
 void insert(Node* current, Node* nnode) {
   if (nnode->getValue() < current->getValue()) {
     if (current->getLeft() == NULL) {
@@ -164,6 +172,7 @@ void insert(Node* current, Node* nnode) {
   }
 }
 
+// print out the diagram of the tree
 void print(Node* root, Node* current, bool line[]) {
   if (current == root) {
     cout << current->getValue() << endl;
@@ -217,6 +226,7 @@ void print(Node* root, Node* current, bool line[]) {
   }
 }
 
+// remove a node from the tree
 void remove(Node* &root, Node* prev, Node* current, int key) {
   if (key < current->getValue()) {
     if (current->getLeft() == NULL) {
@@ -252,31 +262,43 @@ void remove(Node* &root, Node* prev, Node* current, int key) {
       delete current;
     }
     else if (current->getLeft() != NULL && current->getRight() != NULL) {
+      // if the node to be deleted has two children, remove its inorder successor instead and replace the value
       int nvalue = inorder(current->getRight())->getValue();
       remove(root, NULL, root, nvalue);
       current->setValue(nvalue);
     }
     else if (current->getLeft() != NULL) {
-      if (prev->getLeft() == current) {
-	prev->setLeft(current->getLeft());
+      if (current != root) {
+	if (prev->getLeft() == current) {
+	  prev->setLeft(current->getLeft());
+	}
+	else {
+	  prev->setRight(current->getLeft());
+	}
       }
       else {
-	prev->setRight(current->getLeft());
+	root = current->getLeft();
       }
       delete current;
     }
     else {
-      if (prev->getLeft() == current) {
-	prev->setLeft(current->getRight());
+      if (current != root) {
+	if (prev->getLeft() == current) {
+	  prev->setLeft(current->getRight());
+	}
+	else {
+	  prev->setRight(current->getRight());
+	}
       }
       else {
-	prev->setRight(current->getRight());
+	root = current->getRight();
       }
       delete current;
     }
   }
 }
 
+// find the indrder successor for the node to be deleted
 Node* inorder(Node* current) {
   if (current->getLeft() == NULL) {
     return current;
