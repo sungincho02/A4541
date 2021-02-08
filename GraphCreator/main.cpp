@@ -125,15 +125,20 @@ int main() {
       // find the shortest path
       solution = dijkstra(list, find(list, label), find(list, second));
 
-      // print out the shortest path and the cost
-      cout << "\nShortest path: ";
-      for (int i = 0; i < solution->trail.size(); i++) {
-	cout << solution->trail.at(i);
-	if (i+1 < solution->trail.size()) {
-	  cout << " -> ";
+      // print out the shortest path and the cost if it exists
+      if (solution->cost != 100000) {
+	cout << "\nShortest path: ";
+	for (int i = 0; i < solution->trail.size(); i++) {
+	  cout << solution->trail.at(i);
+	  if (i+1 < solution->trail.size()) {
+	    cout << " -> ";
+	  }
 	}
+	cout << "\nCost: " << solution->cost << endl;
       }
-      cout << "\nCost: " << solution->cost << endl;
+      else {
+	cout << "\nThere is no path between them" << endl;
+      }
     }
     else if (strcmp(input, "QUIT") == 0) {
       quit = true;
