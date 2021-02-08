@@ -6,9 +6,17 @@
 
 using namespace std;
 
+struct Path {
+  int cost;
+  vector<char> trail;
+};
+
+
 // function prototypes
 int find(vector<Vertex*> list, char label);
 void print(vector<Vertex*> list);
+Path* dijkstra(vector<Vertex*> list, int source, int destination);
+void travel(vector<Vertex*> list, vector<Path*> paths, vector<bool> &traveled, int current);
 
 int main() {
   bool quit = false;
@@ -19,6 +27,7 @@ int main() {
   char second;
   int weight;
   int key;
+  Path* solution;
 
   cout << "\nCommands:" << endl;
   cout << "ADD V - add a vertex" << endl;
@@ -81,7 +90,7 @@ int main() {
       cout << "Enter the label of the second node: ";
       cin >> second;
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
-      cout << "Enter the weight of the edge: ";
+      cout << "Enter the weight of the edge(up to 99999): ";
       cin >> weight;
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
@@ -106,7 +115,25 @@ int main() {
       print(list);
     }
     else if (strcmp(input, "PATH") == 0) {
-      
+      cout << "\nEnter the label of the source: ";
+      cin >> label;
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      cout << "Enter the label of the destination: ";
+      cin >> second;
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+      // find the shortest path
+      solution = dijkstra(list, find(list, label), find(list, second));
+
+      // print out the shortest path and the cost
+      cout << "\nShortest path: ";
+      for (int i = 0; i < solution->trail.size(); i++) {
+	cout << solution->trail.at(i);
+	if (i+1 < solution->trail.size()) {
+	  cout << " -> ";
+	}
+      }
+      cout << "\nCost: " << solution->cost << endl;
     }
     else if (strcmp(input, "QUIT") == 0) {
       quit = true;
@@ -140,4 +167,72 @@ void print(vector<Vertex*> list) {
     }
   }
   cout << endl;
+}
+
+// construct shortest path list from source and return the path to destination
+Path* dijkstra(vector<Vertex*> list, int source, int destination) {
+  vector<Path*> paths;
+
+  // initialize the shortest paths
+  for (int i = 0; i < list.size(); i++) {
+    paths.push_back(new Path());
+    if (i == source) {
+      paths[i]->cost = 0;
+    }
+    else {
+      paths[i]->cost = 100000;
+    }
+  }
+
+  // keeps track of the nodes traveled
+  vector<bool> traveled;
+
+  for (int i = 0; i < list.size(); i++) {
+    traveled.push_back(false);
+  }
+
+  // start traveling
+  travel(list, paths, traveled, source);
+
+  // return the path to destination
+  return paths[destination];
+}
+
+// travel to find shortest path to each node
+void travel(vector<Vertex*> list, vector<Path*> paths, vector<bool> &traveled, int current) {
+  // mark current node as traveled and update path
+  traveled[current] = true;
+  paths[current]->trail.push_back(list[current]->getLabel());
+  
+  int temp;
+
+  // update shortest path for any neighbour nodes
+  for (int i = 0; i < list.size(); i++) {
+    if (list[current]->getTable()->at(i) != 0) {
+      if (!traveled[i]) {
+	temp = paths[current]->cost + list[current]->getTable()->at(i);
+	if (temp < paths[i]->cost) {
+	  paths[i]->cost = temp;
+	  paths[i]->trail = paths[current]->trail;
+	}
+      }
+    }
+  }
+
+  // find the next node to travel
+  int shortest = 0;
+  int next = -1;
+  for (int i = 0; i < list.size(); i++) {
+    if (!traveled[i]) {
+      if (shortest == 0 || paths[i]->cost < shortest) {
+	shortest = paths[i]->cost;
+	next = i;
+      }
+    }
+  }
+
+  // travel to next node unless none left
+  if (next != -1) {
+    travel(list, paths, traveled, next);
+  }
 }
