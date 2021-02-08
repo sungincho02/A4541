@@ -6,6 +6,7 @@
 
 using namespace std;
 
+// function prototypes
 int search(Node* current, int level, int key);
 void insert(Node* &root, Node* current, Node* nnode);
 void print(Node* root, Node* current, bool line[]);
@@ -19,13 +20,14 @@ Node* getSibling(Node* root, Node* key);
 void leftRotation(Node* &root, Node* parent);
 void rightRotation(Node* &root, Node* parent);
 
+// const variables
 const bool RED = true;
 const bool BLACK = false;
 const bool LEFT = true;
 const bool RIGHT = false;
 
-
 int main() {
+  // initialize variables
   char input[99];
   int method;
   int number;
@@ -35,20 +37,22 @@ int main() {
   bool quit = false;
   bool line[100] = {false};
   
+  // print out commands
   cout << "\nCommands:" << endl;
   cout << "ADD" << endl;
   cout << "BATCH" << endl;
   cout << "PRINT" << endl;
   cout << "DELETE" << endl;
+  cout << "SEARCH" << endl;
   cout << "QUIT" << endl;
   
-  // 
+  // prompt commands
   while (!quit) {
     cout << "\n> ";
     cin.get(input, 99);
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     
-    if (strcmp(input, "ADD") == 0) {
+    if (strcmp(input, "ADD") == 0) {	// add a value to the tree
       cout << "\nEnter the number you want to add: " << endl;
       cout << "> ";
       cin >> number;
@@ -62,7 +66,7 @@ int main() {
 	insert(root, root, nnode);
       }
     }
-    else if (strcmp(input, "BATCH") == 0) {
+    else if (strcmp(input, "BATCH") == 0) {	// add multiple values to the tree either manually or from a file
       // take user input
       cout << "\nEnter the amount of numbers: " << endl;
       cout << "> ";
@@ -97,8 +101,7 @@ int main() {
 	  cin >> list[i];
 	}
       }
-  
-      //
+
       if (root == NULL) {
 	root = new Node(list[0]);
 	
@@ -116,11 +119,11 @@ int main() {
 
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
-    else if (strcmp(input, "PRINT") == 0) {
+    else if (strcmp(input, "PRINT") == 0) {	// print out the tree
       cout << "\n";
       print(root, root, line);
     }
-    else if (strcmp(input, "DELETE") == 0) {
+    else if (strcmp(input, "DELETE") == 0) {	// remove a value from the tree
       cout << "\nEnter the number you want to remove: " << endl;
       cout << "> ";
       cin >> number;
@@ -128,7 +131,7 @@ int main() {
 
       remove(root, root, number);
     }
-    else if (strcmp(input, "SEARCH") == 0) {
+    else if (strcmp(input, "SEARCH") == 0) {	// search a value from the tree
       cout << "\nEnter the number you want to search: " << endl;
       cout << "> ";
       cin >> number;
@@ -152,6 +155,7 @@ int main() {
   return 0;
 }
 
+// search for a value in the tree. If it exists, return its level. If not, return 0.
 int search(Node* current, int level, int key) {
   if (key < current->getValue()) {
     if (current->getLeft() == NULL) {
@@ -174,12 +178,15 @@ int search(Node* current, int level, int key) {
   }
 }
 
+// insert a value to the tree
 void insert(Node* &root, Node* current, Node* nnode) {
+  // skip if it's a duplicate
   if (search(root, 1, nnode->getValue()) != 0) {
     cout << "Dupulicate skipped" << endl;
     return;
   }
   
+  // go through nodes until empty spot is found then add and repair
   nnode->setColor(RED);
   if (nnode->getValue() < current->getValue()) {
     if (current->getLeft() == NULL) {
@@ -201,6 +208,7 @@ void insert(Node* &root, Node* current, Node* nnode) {
   }
 }
 
+// print out the tree
 void print(Node* root, Node* current, bool line[]) {
   if (root == NULL) {
     cout << "Tree is empty" << endl;
@@ -271,6 +279,7 @@ void print(Node* root, Node* current, bool line[]) {
   }
 }
 
+// remove a value from the tree
 void remove(Node* &root, Node* current, int key) {
   Node* parent;
   if (getParent(root, current) == nullptr) {
@@ -279,6 +288,8 @@ void remove(Node* &root, Node* current, int key) {
   else {
     parent = getParent(root, current);
   }
+	
+  // find the value
   if (key < current->getValue()) {
     if (current->getLeft() == NULL) {
       cout << "\nThe number is not in the tree" << endl;
@@ -297,10 +308,10 @@ void remove(Node* &root, Node* current, int key) {
       remove(root, current->getRight(), key);
     }
   }
-  else {
-    if (current->getLeft() == NULL && current->getRight() == NULL) {
+  else {	// once the value is found,
+    if (current->getLeft() == NULL && current->getRight() == NULL) {	// when it has no children
       if (current != root) {
-	if (current->getColor() == RED) {
+	if (current->getColor() == RED) {	// when it's red, just remove
 	  if (parent->getLeft() == current) {
 	    parent->setLeft(NULL);
 	  }
@@ -308,7 +319,7 @@ void remove(Node* &root, Node* current, int key) {
 	    parent->setRight(NULL);
 	  }
 	}
-	else {
+	else {	// when it's black, repair and remove
 	  if (delRepair(root, current) == LEFT) {
 	    getParent(root, current)->setLeft(NULL);
 	  }
@@ -317,16 +328,17 @@ void remove(Node* &root, Node* current, int key) {
 	  }
 	}
       }
-      else {
+      else {	// if it's root, reset root
 	root = NULL;
       }
       delete current;
     }
-    else if (current->getLeft() != NULL && current->getRight() != NULL) {
+    else if (current->getLeft() != NULL && current->getRight() != NULL) {	// when it has two children, remove its inorder successor instead and swap value
       int nvalue = successor(current->getRight())->getValue();
       remove(root, root, nvalue);
       current->setValue(nvalue);
     }
+    // when it has a single child, place its child in its place
     else if (current->getLeft() != NULL) {
       if (current != root) {
 	if (parent->getLeft() == current) {
@@ -362,18 +374,19 @@ void remove(Node* &root, Node* current, int key) {
   }
 }
 
+// deletion repair algorithm
 bool delRepair(Node* &root, Node* current) {
   Node* parent = getParent(root, current);
   Node* sibling = getSibling(root, current);
   
-  if (parent->getLeft() == current) {
-    if (sibling->getColor() == BLACK) {
+  if (parent->getLeft() == current) {	// when the value is a left child,
+    if (sibling->getColor() == BLACK) {	// when sibling is black, 
       if (sibling->getRight() != NULL) {
-	if (sibling->getRight()->getColor() == RED) {
+	if (sibling->getRight()->getColor() == RED) {	// when sibling has a red right child
 	  leftRotation(root, sibling);
 	  sibling->getRight()->setColor(BLACK);
 	}
-	else if (sibling->getLeft() != NULL) {
+	else if (sibling->getLeft() != NULL) {	// when sibling has a red left child and does not have a red right child
 	  if (sibling->getLeft()->getColor() == RED) {
 	    parent->setRight(sibling->getLeft());
 	    sibling->getLeft()->setRight(sibling);
@@ -381,7 +394,7 @@ bool delRepair(Node* &root, Node* current) {
 	    leftRotation(root, getParent(root, sibling));
 	    sibling->setColor(BLACK);
 	  }
-	  else {
+	  else {	// when sibling has no red child
 	    sibling->setColor(RED);
 	    if (parent != root) {
 	      if (parent->getColor() == RED) {
@@ -393,7 +406,7 @@ bool delRepair(Node* &root, Node* current) {
 	    }
 	  }
 	}
-	else {
+	else {	// (no red child)
 	  sibling->setColor(RED);
 	  if (parent != root) {
 	    if (parent->getColor() == RED) {
@@ -406,14 +419,14 @@ bool delRepair(Node* &root, Node* current) {
 	}
       }
       else if (sibling->getLeft() != NULL) {
-	if (sibling->getLeft()->getColor() == RED) {
+	if (sibling->getLeft()->getColor() == RED) {	// (red left child only)
 	  parent->setRight(sibling->getLeft());
 	  sibling->getLeft()->setRight(sibling);
 	  sibling->setLeft(NULL);
 	  leftRotation(root, getParent(root, sibling));
 	  sibling->setColor(BLACK);
 	}
-	else {
+	else {	// (no red child)
 	  sibling->setColor(RED);
 	  if (parent != root) {
 	    if (parent->getColor() == RED) {
@@ -425,7 +438,7 @@ bool delRepair(Node* &root, Node* current) {
 	  }
 	}
       }
-      else {
+      else {	// (no red child)
 	sibling->setColor(RED);
 	if (parent != root) {
 	  if (parent->getColor() == RED) {
@@ -437,14 +450,14 @@ bool delRepair(Node* &root, Node* current) {
 	}
       }
     }
-    else {
+    else {	// when sibling is red
       leftRotation(root, sibling);
       sibling->setColor(BLACK);
       parent->getRight()->setColor(RED);
     }
     return LEFT;
   }
-  else {
+  else {	// when the value is a right child, do simply the opposite(in terms of direction) of when it's a left child
     if (sibling->getColor() == BLACK) {
       if (sibling->getLeft() != NULL) {
 	if (sibling->getLeft()->getColor() == RED) {
@@ -524,6 +537,7 @@ bool delRepair(Node* &root, Node* current) {
   }
 }
 
+// return an inorder successor
 Node* successor(Node* current) {
   if (current->getLeft() == NULL) {
     return current;
@@ -533,6 +547,7 @@ Node* successor(Node* current) {
   }
 }
 
+// return parent node
 Node* getParent(Node* root, Node* child) {
   if (child == nullptr) {
     return nullptr;
@@ -562,6 +577,7 @@ Node* getParent(Node* root, Node* child) {
   }
 }
 
+// return sibling node
 Node* getSibling(Node* root, Node* key) {
   if (key == nullptr) {
     return nullptr;
@@ -579,6 +595,7 @@ Node* getSibling(Node* root, Node* key) {
   }
 }
 
+// return uncle node
 Node* getUncle(Node* root, Node* key) {
   if (key == nullptr) {
     return nullptr;
@@ -591,24 +608,26 @@ Node* getUncle(Node* root, Node* key) {
   }
 }
 
+// return grandfather node
 Node* getGrand(Node* root, Node* key) {
   return getParent(root, getParent(root, key));
 }
 
+// insertion repair algorithm
 void insRepair(Node* &root, Node* current) {
   Node* parent = getParent(root, current);
   Node* grand = getGrand(root, current);
   Node* uncle = getUncle(root, current);
   
-  if (parent == nullptr) {
+  if (parent == nullptr) {	// set root to black
     current->setColor(BLACK);
   }
   else {
     if (grand != nullptr) {
       if (parent->getColor() == RED) {
-	if (uncle == NULL || uncle->getColor() == BLACK) {
-	  if (grand->getLeft() == parent) {
-	    if (parent->getLeft() == current) {
+	if (uncle == NULL || uncle->getColor() == BLACK) {	// when uncle is black
+	  if (grand->getLeft() == parent) {	// when parent is left child
+	    if (parent->getLeft() == current) {	// when current is left child as well
 	      rightRotation(root, parent);
 	      parent->setColor(BLACK);
 	      grand->setColor(RED);
@@ -616,7 +635,7 @@ void insRepair(Node* &root, Node* current) {
 		root = parent;
 	      }
 	    }
-	    else {
+	    else {	// when current is right child
 	      parent->setRight(current->getLeft());
 	      current->setLeft(parent);
 	      current->setLeft(parent);
@@ -629,8 +648,8 @@ void insRepair(Node* &root, Node* current) {
 	      }
 	    }
 	  }
-	  else {
-	    if (parent->getRight() == current) {
+	  else {	// when parent is right child
+	    if (parent->getRight() == current) {	// when current is right child as well
 	      leftRotation(root, parent);
 	      parent->setColor(BLACK);
 	      grand->setColor(RED);
@@ -638,7 +657,7 @@ void insRepair(Node* &root, Node* current) {
 		root = parent;
 	      }
 	    }
-	    else {
+	    else {	// when current is left child
 	      parent->setLeft(current->getRight());
 	      current->setRight(parent);
 	      grand->setRight(current);
@@ -651,10 +670,11 @@ void insRepair(Node* &root, Node* current) {
 	    }
 	  }
 	}
-	else {
+	else {	// when uncle is red
 	  parent->setColor(BLACK);
 	  uncle->setColor(BLACK);
 	  grand->setColor(RED);
+	  // repeat for grandfather
 	  insRepair(root, grand);
 	}
       }
@@ -662,6 +682,7 @@ void insRepair(Node* &root, Node* current) {
   }
 }
 
+// right rotation
 void rightRotation(Node* &root, Node* parent) {
   Node* grand = getParent(root, parent);
   if (grand != root) {
@@ -682,6 +703,7 @@ void rightRotation(Node* &root, Node* parent) {
   }
 }
 
+// left rotation
 void leftRotation(Node* &root, Node* parent) {
   Node* grand = getParent(root, parent);
   if (grand != root) {
