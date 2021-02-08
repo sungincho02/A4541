@@ -10,17 +10,20 @@ int search(Node* current, int level, int key);
 void insert(Node* &root, Node* current, Node* nnode);
 void print(Node* root, Node* current, bool line[]);
 void remove(Node* &root, Node* current, int key);
-void delRepair(Node* &root, Node* current);
+bool delRepair(Node* &root, Node* current);
 Node* successor(Node* current);
 void insRepair(Node* &root, Node* current);
 Node* getParent(Node* root, Node* child);
 Node* getUncle(Node* root, Node* key);
 Node* getSibling(Node* root, Node* key);
-void leftRotation(Node* root, Node* parent);
-void rightRotation(Node* root, Node* parent);
+void leftRotation(Node* &root, Node* parent);
+void rightRotation(Node* &root, Node* parent);
 
 const bool RED = true;
 const bool BLACK = false;
+const bool LEFT = true;
+const bool RIGHT = false;
+
 
 int main() {
   char input[99];
@@ -306,7 +309,12 @@ void remove(Node* &root, Node* current, int key) {
 	  }
 	}
 	else {
-	  delRepair(root, current);
+	  if (delRepair(root, current) == LEFT) {
+	    getParent(root, current)->setLeft(NULL);
+	  }
+	  else {
+	    getParent(root, current)->setRight(NULL);
+	  }
 	}
       }
       else {
@@ -320,87 +328,199 @@ void remove(Node* &root, Node* current, int key) {
       current->setValue(nvalue);
     }
     else if (current->getLeft() != NULL) {
-      if (parent->getLeft() == current) {
-	parent->setLeft(current->getLeft());
-	parent->getLeft()->setColor(BLACK);
+      if (current != root) {
+	if (parent->getLeft() == current) {
+	  parent->setLeft(current->getLeft());
+	  parent->getLeft()->setColor(BLACK);
+	}
+	else {
+	  parent->setRight(current->getLeft());
+	  parent->getRight()->setColor(BLACK);
+	}
       }
       else {
-	parent->setRight(current->getLeft());
-	parent->getRight()->setColor(BLACK);
+	root = current->getLeft();
       }
       delete current;
     }
     else {
-      if (parent->getLeft() == current) {
-	parent->setLeft(current->getRight());
-	parent->getLeft()->setColor(BLACK);
+      if (current != root) {
+	if (parent->getLeft() == current) {
+	  parent->setLeft(current->getRight());
+	  parent->getLeft()->setColor(BLACK);
+	}
+	else {
+	  parent->setRight(current->getRight());
+	  parent->getRight()->setColor(BLACK);
+	}
       }
       else {
-	parent->setRight(current->getRight());
-	parent->getRight()->setColor(BLACK);
+	root = current->getRight();
       }
       delete current;
     }
   }
 }
 
-void delRepair(Node* &root, Node* current) {
+bool delRepair(Node* &root, Node* current) {
   Node* parent = getParent(root, current);
   Node* sibling = getSibling(root, current);
-
+  
   if (parent->getLeft() == current) {
     if (sibling->getColor() == BLACK) {
-      if (sibling->getRight()->getColor() == RED) {
-	parent->setLeft(NULL);
-	leftRotation(root, sibling);
-	sibling->getRight()->setColor(BLACK);
+      if (sibling->getRight() != NULL) {
+	if (sibling->getRight()->getColor() == RED) {
+	  leftRotation(root, sibling);
+	  sibling->getRight()->setColor(BLACK);
+	}
+	else if (sibling->getLeft() != NULL) {
+	  if (sibling->getLeft()->getColor() == RED) {
+	    parent->setRight(sibling->getLeft());
+	    sibling->getLeft()->setRight(sibling);
+	    sibling->setLeft(NULL);
+	    leftRotation(root, getParent(root, sibling));
+	    sibling->setColor(BLACK);
+	  }
+	  else {
+	    sibling->setColor(RED);
+	    if (parent != root) {
+	      if (parent->getColor() == RED) {
+		parent->setColor(BLACK);
+	      }
+	      else {
+		delRepair(root, parent);
+	      }
+	    }
+	  }
+	}
+	else {
+	  sibling->setColor(RED);
+	  if (parent != root) {
+	    if (parent->getColor() == RED) {
+	      parent->setColor(BLACK);
+	    }
+	    else {
+	      delRepair(root, parent);
+	    }
+	  }
+	}
       }
-      else if (sibling->getLeft()->getColor() == RED) {
-	parent->setRight(sibling->getLeft());
-	sibling->getLeft()->setRight(sibling);
-	sibling->setLeft(NULL);
-	leftRotation(root, getParent(root, sibling));
-	sibling->setColor(BLACK);
+      else if (sibling->getLeft() != NULL) {
+	if (sibling->getLeft()->getColor() == RED) {
+	  parent->setRight(sibling->getLeft());
+	  sibling->getLeft()->setRight(sibling);
+	  sibling->setLeft(NULL);
+	  leftRotation(root, getParent(root, sibling));
+	  sibling->setColor(BLACK);
+	}
+	else {
+	  sibling->setColor(RED);
+	  if (parent != root) {
+	    if (parent->getColor() == RED) {
+	      parent->setColor(BLACK);
+	    }
+	    else {
+	      delRepair(root, parent);
+	    }
+	  }
+	}
       }
       else {
 	sibling->setColor(RED);
-	parent->setColor(BLACK);
-	parent->setLeft(NULL);
+	if (parent != root) {
+	  if (parent->getColor() == RED) {
+	    parent->setColor(BLACK);
+	  }
+	  else {
+	    delRepair(root, parent);
+	  }
+	}
       }
     }
     else {
-      parent->setLeft(NULL);
       leftRotation(root, sibling);
-      parent->setColor(RED);
       sibling->setColor(BLACK);
+      parent->getRight()->setColor(RED);
     }
+    return LEFT;
   }
   else {
     if (sibling->getColor() == BLACK) {
-      if (sibling->getLeft()->getColor() == RED) {
-	parent->setRight(NULL);
-	rightRotation(root, sibling);
-	sibling->getLeft()->setColor(BLACK);
+      if (sibling->getLeft() != NULL) {
+	if (sibling->getLeft()->getColor() == RED) {
+	  rightRotation(root, sibling);
+	  sibling->getLeft()->setColor(BLACK);
+	}
+	else if (sibling->getRight() != NULL) {
+	  if (sibling->getRight()->getColor() == RED) {
+	    parent->setLeft(sibling->getRight());
+	    sibling->getRight()->setLeft(sibling);
+	    sibling->setRight(NULL);
+	    rightRotation(root, getParent(root, sibling));
+	    sibling->setColor(BLACK);
+	  }
+	  else {
+	    sibling->setColor(RED);
+	    if (parent != root) {
+	      if (parent->getColor() == RED) {
+		parent->setColor(BLACK);
+	      }
+	      else {
+		delRepair(root, parent);
+	      }
+	    }
+	  }
+	}
+	else {
+	  sibling->setColor(RED);
+	  if (parent != root) {
+	    if (parent->getColor() == RED) {
+	      parent->setColor(BLACK);
+	    }
+	    else {
+	      delRepair(root, parent);
+	    }
+	  }
+	}
       }
-      else if (sibling->getRight()->getColor() == RED) {
-	parent->setLeft(sibling->getRight());
-	sibling->getRight()->setLeft(sibling);
-	sibling->setRight(NULL);
-	rightRotation(root, getParent(root, sibling));
-	sibling->setColor(BLACK);
+      else if (sibling->getRight() != NULL) {
+	if (sibling->getRight()->getColor() == RED) {
+	  parent->setLeft(sibling->getRight());
+	  sibling->getRight()->setLeft(sibling);
+	  sibling->setRight(NULL);
+	  rightRotation(root, getParent(root, sibling));
+	  sibling->setColor(BLACK);
+	}
+	else {
+	  sibling->setColor(RED);
+	  if (parent != root) {
+	    if (parent->getColor() == RED) {
+	      parent->setColor(BLACK);
+	    }
+	    else {
+	      delRepair(root, parent);
+	    }
+	  }
+	}
       }
       else {
 	sibling->setColor(RED);
-	parent->setColor(BLACK);
-	parent->setRight(NULL);
+	if (parent != root) {
+	  if (parent->getColor() == RED) {
+	    parent->setColor(BLACK);
+	  }
+	  else {
+	    delRepair(root, parent);
+	  }
+	}
       }
     }
     else {
-      parent->setRight(NULL);
       rightRotation(root, sibling);
-      parent->setColor(RED);
       sibling->setColor(BLACK);
+      parent->getLeft()->setColor(RED);
     }
+    return RIGHT;
   }
 }
 
@@ -542,7 +662,7 @@ void insRepair(Node* &root, Node* current) {
   }
 }
 
-void rightRotation(Node* root, Node* parent) {
+void rightRotation(Node* &root, Node* parent) {
   Node* grand = getParent(root, parent);
   if (grand != root) {
     Node* great = getParent(root, grand);
@@ -558,10 +678,11 @@ void rightRotation(Node* root, Node* parent) {
   else {
     grand->setLeft(parent->getRight());
     parent->setRight(grand);
+    root = parent;
   }
 }
 
-void leftRotation(Node* root, Node* parent) {
+void leftRotation(Node* &root, Node* parent) {
   Node* grand = getParent(root, parent);
   if (grand != root) {
     Node* great = getParent(root, grand);
@@ -577,5 +698,6 @@ void leftRotation(Node* root, Node* parent) {
   else {
     grand->setRight(parent->getLeft());
     parent->setLeft(grand);
+    root = parent;
   }
 }
